@@ -1,0 +1,29 @@
+users
+    un
+    pw
+    
+user info
+    un - foregin key
+    pledge class
+    year
+    hometown
+    state
+    major
+    major2
+    minor 
+    minor2
+    extra curricular
+    bio
+    aoe memory
+    
+leadership
+    un - foreign key
+    position - foreign key
+    
+position lookup
+    id
+    name
+    
+testimonials
+    un - foreign key
+    message

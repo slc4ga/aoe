@@ -1,0 +1,95 @@
+<?
+    $pageName = $_SERVER['PHP_SELF'];
+?>
+
+<h1><a href="/index.php">Alpha Omega Epsilon at UVa</a></h1>
+<h4 style="margin-left: 40px;">pi chapter est. 2005</h4>
+<div class="row">
+    <div class="col-md-3" style="margin-top: 40px; height: 40px;">
+       <form class="form-inline">  <fieldset>
+         <input type="text" class="form-control" id='searchText' name='searchText' style="width: 70%" placeholder="Search A.O.E @ UVa">
+         <a href="#searchbox" class="btn btn-primary btn-sm" id='submitBtn' name='submitBtn' >Submit</a>
+       </fieldset></form>
+   </div>
+</div>
+<div class="navbar navbar-default" role="navigation">
+        <ul class="nav navbar-nav">
+            <li <? if ($pageName == "/index.php") { echo "class=\"active\""; } ?> >
+                <a href="/index.php">Home</a></li>
+            <li class="dropdown">
+                <a id="drop1" href="" role="button" class="dropdown-toggle" data-toggle="dropdown">About 
+                    <b class="caret"></b></a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/about/about.php?select=1">
+                        A&Omega;E History</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/about/about.php?select=2">
+                        Pi History</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/about/about.php?select=3">
+                        Mission Statement</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/about/about.php?select=4">
+                        Ideals and Objectives</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/about/about.php?select=5">
+                        Testimonials</a></li>
+                </ul>
+            </li>
+            <li <? if ($pageName == "/public/recruitment.php") { echo "class=\"active\""; } ?> > 
+                <a href="/public/recruitment.php">Recruitment </a></li>
+            <li class="dropdown">
+                <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Sisters 
+                    <b class="caret"></b></a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/sisters/sisters.php?select=1">
+                        Kappa Class</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/sisters/sisters.php?select=2">
+                        Lamda Class
+                        </a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/sisters/sisters.php?select=3">
+                        Mu Class</a></li>
+                    <li role="presentation" class="divider"></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/sisters.php?select=4">
+                        Alumnae</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Leadership 
+                    <b class="caret"></b></a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/public/leadership.php?select=1">
+                        Exec. Board</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/public/leadership.php?select=2">Chairs
+                        </a></li>
+                </ul>
+            </li>
+            <li <? if ($pageName == "/public/photos.php") { echo "class=\"active\""; } ?> >
+                <a href="/public/photos.php">Photos</a></li>
+            <li <? if ($pageName == "/public/contact.php") { echo "class=\"active\""; } ?> >
+                <a href="/public/contact.php">Contact</a></li>
+        </ul>
+        <ul class="nav navbar-nav pull-right" role="navigation">
+            <?
+                if(isset($_SESSION['user_id'])) {
+                    echo "<li";
+                        if ($pageName == "/users/userHome.php") { 
+                            echo ' class="active"'; 
+                        } 
+                    echo "> <a href=\"/users/userHome.php\">My Account </a></li>";
+                }
+            ?>
+
+                <?
+                if(!isset($_SESSION['user_id'])) {
+                    echo "<li class=\"dropdown\">";
+                    echo "<a class=\"dropdown-toggle\" href=\"#\" data-toggle=\"dropdown\">Sign In  
+                        <strong class=\"caret\"></strong></a>
+                    <div class=\"dropdown-menu\" style=\"padding: 15px; width:225px\">
+                <!-- Login form here -->";
+                    $root = realpath($_SERVER["DOCUMENT_ROOT"]);
+                    include "$root/nav/login.php";
+                    echo "</div></li>";
+                } else {
+                    echo "<li> <a href=\"/nav/logout.php\">Logout </a></li>";
+                }
+                ?>
+                <li></li>
+        </ul>
+</div>
