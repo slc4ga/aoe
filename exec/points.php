@@ -15,6 +15,8 @@
         <div class="col-md-2"></div>
         <div class="col-md-8">
             <? include 'eventForm.php'; ?>
+            <hr>
+            <? include 'eventCategoryForm.php'; ?>
         </div>
     </div>
     <div class="panel-group" id="accordion">

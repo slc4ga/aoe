@@ -476,6 +476,12 @@ class Mysql {
         $result = $this->mysqli->query($sql) or die("delete event");  
         return $result;
     }
+    
+    function addEventCategory($category) {
+        $sql = "insert into pointsCategories values(null, '$category')"; 
+        $result = $this->mysqli->query($sql) or die("add category");  
+        return $result;
+    }
 
 }
 
