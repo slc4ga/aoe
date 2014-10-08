@@ -159,6 +159,19 @@
             ?>
         </div>
          <script type="text/javascript">
+                         
+            function submitAttendance(id, divId) {
+                $.ajax({
+                        url: "submitAttendance.php",
+                        data: { eventId: id, 
+                                catId : divId },
+                        success: function(data){  
+                            $('#' + divId).html(data);
+                        }
+                    });
+                    return false;
+            }
+             
             window.onload = function() {
                 
                 document.getElementById("profile").onclick = function() {

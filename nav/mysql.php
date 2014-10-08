@@ -509,7 +509,59 @@ class Mysql {
         $result = $this->mysqli->query($sql) or die("set chapter pass"); 
         return $result;
     }
-
+    
+    function getPointsInMonth() {
+        $sql = "select points from events where date > '" . date('Y-m-1', time()) . "' and date < '". date('Y-m-t', time()) . "'";
+        $result = $this->mysqli->query($sql) or die("get points in month");  
+        $points = 0;
+        while($row = mysqli_fetch_array($result)) {
+            $points += $row[0];
+        }
+        return $points;
+    }
+    
+    function getPointsInCategory($cat) {
+        $sql = "select points from events where category=$cat and date < '" . date('Y-m-d', time()) . "'";
+        $result = $this->mysqli->query($sql) or die("get points in category");  
+        $points = 0;
+        while($row = mysqli_fetch_array($result)) {
+            $points += $row[0];
+        }
+        return $points;
+    }
+    
+    function getPointsInMonthForUser($un) {
+        $sql = "select points from events inner join points on events.id = points.eventId where date > '" . date('Y-m-1', time()) . "' and date < '". date('Y-m-t', time()) . "' and points.username = '" . $un . "' and approved=1";
+        $result = $this->mysqli->query($sql) or die("get points in month for user");  
+        $points = 0;
+        while($row = mysqli_fetch_array($result)) {
+            $points += $row[0];
+        }
+        return $points;
+    }
+        
+        
+    function getPointsInCategoryForUser($cat) {
+        $sql = "select points from events inner join points on events.id = points.eventId where category=$cat and date < '" . date('Y-m-d', time()) . "' and points.username = '" . $_SESSION['user_id'] . "' and approved=1";
+        $result = $this->mysqli->query($sql) or die("get points in category for user");  
+        $points = 0;
+        while($row = mysqli_fetch_array($result)) {
+            $points += $row[0];
+        }
+        return $points;
+    }
+    
+    function submitAttendance($un, $eventId) { 
+        $sql = "insert into points values ($eventId, '$un', 0)";
+        $result = $this->mysqli->query($sql) or die("submit attendance");  
+        return $result;
+    }
+    
+    function checkAttendance($un, $eventId) {
+        $sql = "select * from points where username = '$un' and eventId = $eventId";
+        $result = $this->mysqli->query($sql) or die("check attendance");  
+        return $result->num_rows;    
+    }
 }
 
 ?>
