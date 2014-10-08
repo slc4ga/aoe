@@ -30,14 +30,10 @@
         <link rel="stylesheet" href="../bootstrap/colorbox/example4/colorbox.css" type="text/css">
             
         <link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet" />
-        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-        <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js" ></script>
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
         <script src="../bootstrap/js/bootbox.min.js"></script>
-    
 
-        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
         <script src="../bootstrap/js/bootstrap.js"></script>
             
         

@@ -68,15 +68,25 @@
                                 }
                                 // chair position
                                 else if($row[0] == 10) {
-                                    echo "<p style='text-align:center'>
-                                            Update leadership to allocate chair position points.
-                                          </p>";
+                                    echo "<p><em>
+                                            Remember - these points aren't counted towards your monthly totals! 
+                                            You should receive " . CHAIR_POINTS . " points per chair position listed here.
+                                          </em></p>";
+                                    $chairs = $mysql->getChairPositionPoints($_SESSION['user_id']);
+                                    while($pos = mysqli_fetch_array($chairs, MYSQLI_ASSOC)) {
+                                        echo "<h5 style='text-align: center'>" . $pos["name"] . "</h5>";
+                                    }
                                 }
                                 // committee position
                                 else if($row[0] == 11) {
-                                    echo "<p style='text-align:center'>
-                                            Update leadership to allocate committee position points.
-                                           </p>";
+                                    echo "<p><em>
+                                            Remember - these points aren't counted towards your monthly totals! 
+                                            You should receive " . COMMITTEE_POINTS . " points per committee position listed here.
+                                          </em></p>";
+                                    $chairs = $mysql->getCommitteePositionPoints($_SESSION['user_id']);
+                                    while($pos = mysqli_fetch_array($chairs, MYSQLI_ASSOC)) {
+                                        echo "<h5 style='text-align: center'>" . $pos["name"] . "</h5>";
+                                    }
                                 }
                                 // all other categories
                                 else {

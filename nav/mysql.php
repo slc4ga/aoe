@@ -345,7 +345,7 @@ class Mysql {
     }
     
     function getAllLeaders($pos) {
-        $sql = "select username from leadership where position='$pos'";
+        $sql = "select username from leadership where position='$pos' and start_date >= DATE_SUB(NOW(),INTERVAL 1 YEAR) and current=1";
         $result = $this->mysqli->query($sql) or die("leaders"); 
         return $result;
     }
@@ -358,9 +358,10 @@ class Mysql {
         $result = $this->mysqli->query($sql) or die("get username");  
         $row = $result->fetch_array(MYSQLI_NUM);
 
-        $sql = "insert into leadership values('$row[0]', '$pos')";
+        $sql = "insert into leadership values('$row[0]', '$pos', '" . date('Y-m-d', time()) . "',1)";
         echo $sql;
-        $result = $this->mysqli->query($sql) or die("insert pos");  
+        $result = $this->mysqli->query($sql) or die("insert pos"); 
+        
     }
     
     function deleteLeader($pos, $name) {
@@ -370,7 +371,7 @@ class Mysql {
         $result = $this->mysqli->query($sql) or die("get username");  
         $row = $result->fetch_array(MYSQLI_NUM);
 
-        $sql = "delete from leadership where username='$row[0]' and position='$pos'";
+        $sql = "update leadership set current=0 where username='$row[0]' and position='$pos'";
         $result = $this->mysqli->query($sql) or die("delete pos");  
     }
     
@@ -511,7 +512,7 @@ class Mysql {
     }
     
     function getPointsInMonth() {
-        $sql = "select points from events where date > '" . date('Y-m-1', time()) . "' and date < '". date('Y-m-t', time()) . "'";
+        $sql = "select points from events where date > '" . date('Y-m-1', time()) . "' and date < '". date('Y-m-t', time()) . "' and not category=10 and not category=11";
         $result = $this->mysqli->query($sql) or die("get points in month");  
         $points = 0;
         while($row = mysqli_fetch_array($result)) {
@@ -531,7 +532,7 @@ class Mysql {
     }
     
     function getPointsInMonthForUser($un) {
-        $sql = "select points from events inner join points on events.id = points.eventId where date > '" . date('Y-m-1', time()) . "' and date < '". date('Y-m-t', time()) . "' and points.username = '" . $un . "' and approved=1";
+        $sql = "select points from events inner join points on events.id = points.eventId where date > '" . date('Y-m-1', time()) . "' and date < '". date('Y-m-t', time()) . "' and points.username = '" . $un . "' and approved=1 and not category=10 and not category=11";
         $result = $this->mysqli->query($sql) or die("get points in month for user");  
         $points = 0;
         while($row = mysqli_fetch_array($result)) {
@@ -542,7 +543,18 @@ class Mysql {
         
         
     function getPointsInCategoryForUser($cat) {
-        $sql = "select points from events inner join points on events.id = points.eventId where category=$cat and date < '" . date('Y-m-d', time()) . "' and points.username = '" . $_SESSION['user_id'] . "' and approved=1";
+        $un = $_SESSION['user_id'];
+        if($cat == 10) {
+            $sql = "select * from leadership inner join posList on leadership.`position`=posList.`id` where username='$un' and `order`=0";
+            $result = $this->mysqli->query($sql) or die("get points in category for user - chair"); 
+            return $result->num_rows * CHAIR_POINTS;
+        } else if($cat == 11) {
+            $sql = "select * from leadership inner join posList on leadership.`position`=posList.`id` where username='$un' and `order`=-1";
+            $result = $this->mysqli->query($sql) or die("get points in category for user - committee"); 
+            return $result->num_rows * COMMITTEE_POINTS;
+        } 
+        
+        $sql = "select points from events inner join points on events.id = points.eventId where category=$cat and date < '" . date('Y-m-d', time()) . "' and points.username = '$un' and approved=1";
         $result = $this->mysqli->query($sql) or die("get points in category for user");  
         $points = 0;
         while($row = mysqli_fetch_array($result)) {
@@ -561,6 +573,18 @@ class Mysql {
         $sql = "select * from points where username = '$un' and eventId = $eventId";
         $result = $this->mysqli->query($sql) or die("check attendance");  
         return $result->num_rows;    
+    }
+    
+    function getChairPositionPoints($un) {
+        $sql = "select * from leadership inner join posList on leadership.`position`=posList.`id` where username='$un' and `order`=0 order by start_date desc";
+        $result = $this->mysqli->query($sql) or die("get chair position points");  
+        return $result;     
+    }
+    
+    function getCommitteePositionPoints($un) {
+        $sql = "select * from leadership inner join posList on leadership.`position`=posList.`id` where username='$un' and `order`=-1 order by start_date desc";
+        $result = $this->mysqli->query($sql) or die("get chair position points");  
+        return $result;     
     }
 }
 
