@@ -367,6 +367,13 @@ img {
   border-radius: 50%;
 }
 
+.chapter {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
 hr {
   margin-top: 20px;
   margin-bottom: 20px;

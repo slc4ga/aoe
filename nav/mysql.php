@@ -482,6 +482,33 @@ class Mysql {
         $result = $this->mysqli->query($sql) or die("add category");  
         return $result;
     }
+    
+    function getChapters() {
+        $sql = "select * from events inner join chapterPass on events.id=chapterPass.eventId where category=9"; 
+        $result = $this->mysqli->query($sql) or die("get chapters");  
+        return $result;
+    }
+    
+    function generateChapterPassword() {
+        $alphabet = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789";
+        $pass = array(); //remember to declare $pass as an array
+        $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
+        for ($i = 0; $i < 6; $i++) {
+            $n = rand(0, $alphaLength);
+            $pass[] = $alphabet[$n];
+        }
+        return implode($pass); //turn the array into a string  
+    }
+    
+    function setChapterPass($pw) {
+        $sql = "select id from events order by id desc limit 1";
+        $result = $this->mysqli->query($sql) or die("get chapter id for pass");  
+        $id = $result->fetch_array(MYSQLI_NUM)[0];
+        
+        $sql = "insert into chapterPass values($id, '$pw')";
+        $result = $this->mysqli->query($sql) or die("set chapter pass"); 
+        return $result;
+    }
 
 }
 

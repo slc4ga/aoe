@@ -115,6 +115,18 @@
                     return false;
             }
             
+            function addChapter() {
+                var date = $("#chapterDate").val();
+                $.ajax({
+                        url: "addChapter.php",
+                        data: { date: date},
+                        success: function(data){  
+                            $('#9').html(data);
+                        }
+                    });
+                    return false;
+            }
+            
             window.onload = function() {
                 
                 document.getElementById("points").onclick = function() {

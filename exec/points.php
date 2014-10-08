@@ -35,7 +35,19 @@
                             <div class="panel-body">';
                                 // chapter
                                 if($row[0] == 9) {
-                                    
+                                    include 'chapterForm.php';
+                                    echo "<br>";
+                                    $chaps = $mysql->getChapters();
+                                    if($chaps->num_rows == 0) {
+                                        echo "<p style='text-align:center'><em>No chapters entered yet!</em></p>";   
+                                    } else {
+                                        while ($chapter = mysqli_fetch_array($chaps)) {
+                                            echo "<div class='col-md-4 chapter'>";
+                                                echo date('n/j/Y', strtotime($chapter[3])) . " ($chapter[6])";
+                                            echo "</div>";
+
+                                        }
+                                    }
                                 }
                                 // chair position
                                 else if($row[0] == 10) {
