@@ -10,7 +10,8 @@
         <head>
         
         <meta charset="utf-8">
-        <title> A.O.E. Pi - Sisters </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title> A.O.E. Pi - Leadership </title>
             
         <link rel="stylesheet" href="../bootstrap/css/bootstrap.css" type="text/css">
         
@@ -43,7 +44,7 @@
                     <div id="content">
                         <script type="text/javascript">
                             var select = window.location.href.toString().split("=")[1];
-                            $('.nav li').removeClass('active');
+                            $('.nav-pills li').removeClass('active');
                             if(select == 2) {
                                 $.ajax({
                                     url: 'getLeadership.php',
@@ -73,7 +74,7 @@
             window.onload = function() {
                 
                 document.getElementById("exec").onclick = function() {
-                    $('.nav li').removeClass('active');
+                    $('.nav-pills li').removeClass('active');
                     $.ajax({
                         url: 'getLeadership.php',
                         data: { class: 'exec' },
@@ -86,7 +87,7 @@
                 }
                 
                 document.getElementById("chairs").onclick = function() {
-                    $('.nav li').removeClass('active');
+                    $('.nav-pills li').removeClass('active');
                     $.ajax({
                         url: 'getLeadership.php',
                         data: { class: 'chairs' },

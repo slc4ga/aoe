@@ -38,40 +38,23 @@ class Mysql {
             username');
         $num = $result->num_rows;
         if($num == 0) {
-                $md5 = md5($this->randomPassword());
-                $sql = "insert into users values('$un', '$md5');";
+                $md5 = $this->randomPassword();
+                $newmd5 = md5($md5);
+                $sql = "insert into users values('$un', '$newmd5');";
                 $result = $this->mysqli->query($sql) or die('ERROR: User could not be 
                     added'); 
             
                 //send email
-                $un = 'slc4ga';
                 $to = $un . '@virginia.edu';
                 $subject = "New AOE - Pi Account!";
-                $message = "
-                <html>
-                    <head>
-                        <title>New AOE Pi Chapter Account</title>
-                    </head>
-                    <body>
-                        <p>Welcome to the website of the Pi Chapter of Alpha Omega Epsilon. You've had an account made for you 
-                            with the following credentials:</p>
-                        <br>
-                        <p>
-                            Username: " . $un . "<br>
-                            Password: " . $md5 . "<br>
-                        </p>
-                        <br>
-                        <p>
-                            Please navigate to <a href=\"http://alphaomegaepsilonatuva.com/\">http://alphaomegaepsilonatuva.com/</a> to
-                            change your password and edit and view your profile as soon as possible.
-                        </p>
-                    </body>
-                </html>";       
+                $message = "Welcome to the website of the Pi Chapter of Alpha Omega Epsilon. You've had an account made for you with the following credentials:\n
+                 Username: " . $un . "
+                 Password: " . $md5 . "\n\nPlease navigate to http://alphaomegaepsilonatuva.com/ to change your password and edit and view your profile as soon as possible. \n\nQuestions? Email our webmaster at " . WEBMASTER_EMAIL . " with specific details and she'll get back to you as soon as possible!";       
             
                 // To send HTML mail, the Content-type header must be set
                 $headers  = 'MIME-Version: 1.0' . "\r\n";
                 $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-                $headers = "From: " . WEBMASTER_EMAIL;
+                $headers = "From: info@alphaomegaepsilonatuva.com";
             
                 mail($to, $subject, $message, $headers);
             
@@ -94,11 +77,11 @@ class Mysql {
         if ($num == 1) {
             setcookie("aoeuserID", $un, time()+3600);
             session_start();
-            $_SESSION['user_id'] = $un;
             $sql = "SELECT * FROM users WHERE username = '$un' AND pw = '$md5'";
             $result = $this->mysqli->query($sql) or die("password");
             $num = $result->num_rows;
             if($num == 1) {
+                $_SESSION['user_id'] = $un;
                 header("location: ../users/userHome.php");
                 return "";
             }
@@ -122,24 +105,21 @@ class Mysql {
         // escape sql injections
         $un = $this->quote_smart($un, $db_handle);
         
-        $sql = "SELECT password FROM users WHERE email = '$un'";
+        $sql = "SELECT pw FROM users WHERE username = '$un'";
         $result = $this->mysqli->query($sql) or die("username");
         $num = $result->num_rows;
         if ($num == 1) {
             $row = $result->fetch_array(MYSQLI_NUM);
             $pw = $this->randomPassword();
             $md5 = md5($pw);
-            $sql = "update users set password='$md5'";
+            $sql = "update users set pw='$md5' where username='$un'";
             $result = $this->mysqli->query($sql) or die("username");
-            $sql = "SELECT email FROM users WHERE email = '$un'";
-            $result = $this->mysqli->query($sql) or die("username");
-            $row = $result->fetch_array(MYSQLI_NUM);
-            $to = $row[0];
+
+            $to = $un . "@virginia.edu";
             $headers = 'From: ' . "\r\n" .
                         'Reply-To: ';
             $subject = "Password Retrieval";
-            $message = "You have requested your password from the A.O.E Pi Chapter website. Your password has been reset, and your 
-                    new login information is as follows: \n\nUsername: " . $un . "\nPassword: " . $pw;
+            $message = "You have requested your password from the A.O.E Pi Chapter website. Your password has been reset, and your new login information is as follows: \n\nUsername: " . $un . "\nPassword: " . $pw;
             mail($to, $subject, $message, $headers);
             return "";
         }
@@ -149,24 +129,28 @@ class Mysql {
     function resetPass($old, $new) {
         $old = $this->quote_smart($old);
         $new = $this->quote_smart($new);
+        session_start();
         
         $md5old = md5($old);
         $md5new = md5($new);
-        $un = $_SESSION['userid'];
-        $sql = "select * from users where password='$md5old' and username='$un'";
-        $result = $this->mysqli->query($sql) or die("username");
+        $un = $_SESSION["user_id"];
+        $sql = "select * from users where pw='$md5old' and username='$un'";
+        $result = $this->mysqli->query($sql);
         $num = $result->num_rows;
+        //echo $num;
         if ($num == 1) {
-            $sql = "update users set password='$md5new' where password='$md5old' and username='$un'";
-            $result = $this->mysqli->query($sql) or die("username");
+            $sql = "update users set pw='$md5new' where pw='$md5old' and username='$un'";
+            $result = $this->mysqli->query($sql) or die("password");
+            $_SESSION['resetPass'] = "success";
             return "success";
+        } else {
+             $_SESSION['resetPass'] = "old";
+             return "old";
         }
-        return "error";
     }
     
     function sendMessage($name, $email, $subject, $message) {
-        //$to  = 'aoes-exec@virginia.edu';
-        $to = 'slc4ga@virginia.edu';
+        $to  = 'aoes-execs@virginia.edu';
         $headers = "From: info@alphaomegaepsilonatuva.com";
         $headers .= "Reply-to: " . $name . " <" . $email . ">";
         
@@ -221,9 +205,11 @@ class Mysql {
         return $result;
     }
     
-    function deleteSister($un) {
-        $sql = "delete from users where username='$un'";
-        $result = $this->mysqli->query($sql) or die("delete sister");
+    function convertSister($un) {
+        $class = $this->getPledgeClass($un);
+        $newClass = "Alumnae (" . $class . ")";
+        $sql = "update profiles set pc='$newClass' where username='$un'";
+        $result = $this->mysqli->query($sql) or die("convert sister");
         return $result;
     }
     
@@ -271,6 +257,16 @@ class Mysql {
         return false;
     }
     
+    function checkExec($un) {
+        $sql = "select `order` from leadership inner join posList on leadership.position=posList.ID where username='$un'";
+        $result = $this->mysqli->query($sql) or die("check webmaster");  
+        $row = $result->fetch_array(MYSQLI_NUM);
+        if($row[0] == 1) {
+            return true;
+        }
+        return false;
+    }
+    
     function addTestimonial($message) {
         $message = $this->quote_smart($message);
         $sql = "insert into testimonials values (null,'" . $_SESSION['user_id'] . "','$message',0)";
@@ -293,15 +289,22 @@ class Mysql {
     }
     
     function getAllPendingTestimonials() {
-        $sql = "select * from testimonials where approved=0";
+        $sql = "select * from testimonials where approved=0 order by username asc";
         $result = $this->mysqli->query($sql) or die("all pending testimonials");
         return $result;
     }
     
     function getAllApprovedTestimonials() {
-        $sql = "select * from testimonials where approved=1";
+        $sql = "select * from testimonials where approved=1 order by username asc";
         $result = $this->mysqli->query($sql) or die("all approved testimonials");
         return $result;
+    }
+        
+    function getTestimonial($id) {
+        $sql = "select message from testimonials where id=$id";
+        $result = $this->mysqli->query($sql) or die("get testimonial");
+        $row = $result->fetch_array(MYSQLI_NUM);
+        return $row[0];
     }
     
     function deleteTestimonial($id) {
@@ -314,16 +317,22 @@ class Mysql {
         $result = $this->mysqli->query($sql) or die("approve testimonials"); 
     }
     
+    function editTestimonial($id, $text) {
+        $sql = "update testimonials set message='$text' where id=$id";
+        //echo $sql;
+        $result = $this->mysqli->query($sql) or die("edit testimonials"); 
+    }
+    
     function getPositions() {
         $sql = "SELECT DISTINCT posList.id,posList.name FROM posList left join leadership on 
-                posList.id=leadership.position where posList.order=0";
+                posList.id=leadership.position where posList.order=0 or posList.order=-1";
         $result = $this->mysqli->query($sql) or die("positions"); 
         return $result;
     }
     
     function getExec() {
         $sql = "SELECT DISTINCT posList.id,posList.name FROM posList left join leadership on 
-                posList.id=leadership.position where not posList.order=0 order by posList.order asc";
+                posList.id=leadership.position where not posList.order=0 and not posList.order=-1 order by posList.order asc";
         $result = $this->mysqli->query($sql) or die("exec"); 
         return $result;
     }
@@ -343,12 +352,14 @@ class Mysql {
     
     function addLeader($pos, $name) {
         $array = explode(" ", $name);
-        
+        echo $array[0] . " " . $array[1];
         $sql = "select username from profiles where first_name='$array[0]' and last_name='$array[1]'";
+        echo $sql;
         $result = $this->mysqli->query($sql) or die("get username");  
         $row = $result->fetch_array(MYSQLI_NUM);
 
         $sql = "insert into leadership values('$row[0]', '$pos')";
+        echo $sql;
         $result = $this->mysqli->query($sql) or die("insert pos");  
     }
     
@@ -388,10 +399,9 @@ class Mysql {
     
     function getLeadership($id) {
         $sql = "SELECT posList.name FROM leadership LEFT JOIN posList ON posList.id = leadership.position 
-            WHERE leadership.username = '$id'"; 
+            WHERE leadership.username = '$id' order by posList.order desc";
         $result = $this->mysqli->query($sql) or die("leadership lookup");  
-        $row = $result->fetch_array(MYSQLI_NUM);
-        return $row[0]; 
+        return $result; 
     }
     
     function updateProfile($year, $hometown, $country, $major, $major2, $minor, $minor2, $activities, $bio) {
@@ -404,12 +414,69 @@ class Mysql {
         $result = $this->mysqli->query($sql) or die("leadership lookup");  
         return true;
     }
-    
-    function getFamilies() {
-        $sql = "select distinct family from families";
-        $result = $this->mysqli->query($sql) or die("family names");  
-        return $result;    
+
+    function searchSisters($term) {
+        $sql = "SELECT * FROM profiles where lower(username) like lower('%$term%') or lower(first_name) like lower('%$term%') or lower(last_name) like lower('%$term%') or lower(pc) like lower('%$term%') or lower(year) like lower('%$term%') or lower(hometown) like lower('%$term%') or lower(state) like lower('%$term%') or lower(major) like lower('%$term%') or lower(major2) like lower('%$term%') or lower(minor) like lower('%$term%') or lower(minor2) like lower('%$term%') or lower(activities) like lower('%$term%') or lower(bio) like lower('%$term%')"; 
+        //echo $sql;
+        $result = $this->mysqli->query($sql) or die("sister search");  
+        return $result;
     }
+
+    function searchPledgeClass($term) {
+        $sql = "SELECT DISTINCT pc FROM profiles where lower(pc) like lower('%$term%')"; 
+        $result = $this->mysqli->query($sql) or die("pc search");  
+        return $result;
+    }
+
+    function getURL($pc) {
+        if($pc == 'Kappa') 
+             return "sisters.php?select=1";
+        else if($pc == 'Lambda') 
+             return "sisters.php?select=2";
+        else if($pc == 'Mu') 
+             return "sisters.php?select=3";
+        else if($pc == 'Nu') 
+             return "sisters.php?select=5";
+        else
+             return "sisters.php?select=4";
+    }
+
+    function searchExecPositions($term) {
+        $sql = "SELECT DISTINCT posList.order, posList.name, posList.id FROM profiles LEFT JOIN leadership LEFT JOIN posList ON posList.id = leadership.position ON profiles.username = leadership.username WHERE lower(posList.name) like lower('%$term%') and not posList.order=0 order by posList.order asc"; 
+        $result = $this->mysqli->query($sql) or die("pos search");  
+        return $result;
+    }
+
+    function searchChairPositions($term) {
+        $sql = "SELECT DISTINCT posList.order, posList.name, posList.id FROM profiles LEFT JOIN leadership LEFT JOIN posList ON posList.id = leadership.position ON profiles.username = leadership.username WHERE lower(posList.name) like lower('%$term%') and posList.order=0 order by posList.order asc"; 
+        $result = $this->mysqli->query($sql) or die("pos search");  
+        return $result;
+    }
+    
+    function getPointsCategories() {
+        $sql = "select * from pointsCategories order by num asc"; 
+        $result = $this->mysqli->query($sql) or die("get categories");  
+        return $result;
+    }
+    
+    function addEvent($name, $date, $points, $category) {
+        $sql = "insert into events values(null, '$name', $category, '$date', $points)"; 
+        $result = $this->mysqli->query($sql) or die("add event");  
+        return $result;
+    }
+    
+    function getEventsInCategory($category) {
+        $sql = "select * from events where category=$category"; 
+        $result = $this->mysqli->query($sql) or die("get events in category");  
+        return $result;
+    }
+    
+    function deleteEvent($id) {
+        $sql = "delete from events where id=$id";
+        $result = $this->mysqli->query($sql) or die("delete event");  
+        return $result;
+    }
+
 }
 
 ?>

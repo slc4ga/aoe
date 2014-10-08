@@ -1,3 +1,7 @@
+<?
+    session_start();
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -34,32 +38,32 @@
       </ol>
       <div class="carousel-inner">
         <div class="item active">
-          <img src="img/static/Cover3.jpg" alt="First slide">
+          <img src="/img/static/Cover3.jpg" alt="Homecomings">
           <div class="container">
             <div class="carousel-caption">
-              <h1>Example headline.</h1>
-              <p>Note: If you're viewing this page via a <code>file://</code> URL, the "next" and "previous" Glyphicon buttons on the left and right might not load/display properly due to web browser security rules.</p>
-              <p><a class="btn btn-lg btn-primary" href="#" role="button">Sign up today</a></p>
+              <h1 style="text-transform:none;">a&Omega;e loves our sisters!</h1>
+              <p>We rep that orange and blue every day, but especially on Homecomings with our alumnae!</p>
+              <p><a class="btn btn-primary" href="/sisters/sisters.php?select=4" role="button">View the Sisters</a></p>
             </div>
           </div>
         </div>
         <div class="item">
-          <img src="img/static/Cover2.jpg" alt="Second slide">
+          <img src="/img/static/Cover2.jpg" alt="Foxfield">
           <div class="container">
             <div class="carousel-caption">
-              <h1>Another example headline.</h1>
-              <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-              <p><a class="btn btn-lg btn-primary" href="#" role="button">Learn more</a></p>
+              <h1>Foxfield</h1>
+              <p>We may be UVa's only engineering sorority, but we still enjoy the Races!</p>
+              <p><a class="btn btn-primary" href="/public/photos.php" role="button">More Pictures</a></p>
             </div>
           </div>
         </div>
         <div class="item">
-          <img src="img/static/Cover1.jpg" alt="Third slide">
+          <img src="/img/static/Cover1.jpg" alt="Recruitment">
           <div class="container">
             <div class="carousel-caption">
-              <h1>One more for good measure.</h1>
-              <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-              <p><a class="btn btn-lg btn-primary" href="#" role="button">Browse gallery</a></p>
+              <h1>Looking to pledge?</h1>
+              <p>A&Omega;E holds recruitment events in the Spring, and all the information will be posted on our recruitment page.</p>
+              <p><a class="btn btn-primary" href="/public/recruitment.php" role="button">Recruitment Info</a></p>
             </div>
           </div>
         </div>
@@ -87,54 +91,44 @@
                          science students and alumnae. Founded on November 13, 1983 at Marquette University, the sorority promotes 
                          ideals and objectives that further the advancement of female engineers and technical scientists. At the 
                          same time, the sisters of Alpha Omega Epsilon develop bonds of lifelong friendships and strive for 
-                         scholarship and academic achievment. 
+                         scholarship and academic achievement. 
                      </p>
                      
                      <p>
-                         The Pi Chapter of A&Omega;E attends local Charlottesville events, such as football games and Foxfields, 
+                         The Pi Chapter of A&Omega;E attends local Charlottesville events, such as football games and Foxfield, 
                          works with local Girl Scouts on science and technology badges, and raises money for local charities while 
                          encouraging its members to get involved in the UVa Engineering school and the greater University 
                          community.
                      </p>
                          
-                    <h2>Recruitment 2014</h2>
-                    <hr>
-                    <h4>
-                        We will have two interest meetings for AOE Spring 2014 Recruitment on <span style="color:#0088cc"><b><em>January 
-                        21st</em></b></span> and <span style="color:#0088cc"><b><em>22nd</em></b></span> in <span style="color:#0088cc"><b>
-                        <em>Thornton E316</em></b></span> from <span style="color:#0088cc"><b><em>5:30-6:30 PM </em></b></span>.
-                    </h4>
-                    <hr>
+                    <h2>Recruitment 2015</h2>
                     <p>
-                        We currently have 70 active sisters and will be recruiting again starting in January 2014. Please check 
-                        back later for updates on events.
-                    </p>
-                     
+                        We currently have 97 active sisters. Unfortunately, Recruitment for the Nu class just finished, but we will be recruiting again in January of 2015. 
                     <p>
-                        In order to be eligible for A&Omega;E recruitment, you must meet the following requirements:
+                        In order to be eligible for A&Omega;E Recruitment, you must meet the following requirements:
                     </p>
                     
                     <ol>
-                        <li>You are enrolled in the Engineering School or pursuing a science degree </li>
-                        <li>You are a current first, second, or third year</li>
+                        <li>You are enrolled in the Engineering School </li>
+                        <li>You are a current first or second year</li>
                         <li>You are able to attend most of our Recruitment events</li>
                     </ol>
                      
                     <p>
                         More information about recruitment will be posted as it becomes available, so please continue to check our 
-                        website. If you have any questions feel free to <a href="contact.php">contact our exec board</a> or email our 
-                        recruitment chairs: <b>Sam Hughes (sah2pd)</b> and <b>Katy Burgio (kgb8ff)</b>.
-
+                        website. If you have any questions feel free to <a href="contact.php">contact our exec board</a>.
                     </p>
-                     
                     <br> 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <img style="width: 100%" src="img/static/calendar.png">
-                        </div>
-                    </div>
-
-  
+                    <h4>Disclaimer: Non-affiliation</h4>
+                    <p>
+                        Although this organization has members who are University of Virginia students and may have 
+                        University employees associated or engaged in its activities and affairs, the organization is not a 
+                        part of or an agency of the University. It is a separate and independent organization which is 
+                        responsible for and manages its own activities and affairs. The University does not direct, 
+                        supervise or control the organization and is not responsible for the organization’s contracts, acts 
+                        or omissions.
+                    </p>
+                    <br>
                  </div>
                 
             </div>

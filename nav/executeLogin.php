@@ -13,9 +13,9 @@ $mysql = new Mysql();
                 }
                 elseif(!$_POST['remember']) {
 	               if(isset($_COOKIE['remember_me'])) {
-                      $past = time() - 100;
+                              $past = time() - 100;
 		              setcookie(remember_me, gone, $past);
-                   }
+                       }
                 }
 
                 //redirect

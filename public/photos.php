@@ -2,6 +2,7 @@
     include_once '../nav/mysql.php';
     
     $mysql = New Mysql();
+    session_start();
 
     if($_POST) {
         if(!empty($_POST['name']) && !empty($_POST['reply']) && !empty($_POST['category']) && !empty($_POST['message'])) {
@@ -19,14 +20,15 @@
     <head>
     
         <meta charset="utf-8">
-        <title>A.O.E Pi - Contact</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>A.O.E Pi - Photos</title>
         
         <link rel="stylesheet" href="../bootstrap/css/bootstrap.css" type="text/css">
         <link href="../bootstrap/lightbox/css/lightbox.css" rel="stylesheet" />
         
         <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-        <script src="/~Steph/AOE/bootstrap/js/bootstrap.js"></script>
+        <script src="../bootstrap/js/bootstrap.js"></script>
         
         <script src="../bootstrap/lightbox/js/jquery-1.10.2.min.js"></script>
         <script src="../bootstrap/lightbox/js/lightbox-2.6.min.js"></script>
@@ -152,7 +154,7 @@
                                      width="200" height="150"/>
                             </a>
                             <a class="example-image-link" href="../img/album/album15.jpg" data-lightbox="aoe" 
-                               title="Some of our alums love us so much they'll fly all the way from Seattle just for tailgates!">
+                               title="Some of our alums love us so much they'll fly all the way from San Francisco just for tailgates!">
                                 <img class="example-image" src="../img/album/album15.jpg" alt="" 
                                      width="200" height="150"/>
                             </a>

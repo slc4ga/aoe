@@ -303,7 +303,7 @@ html {
 }
 
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: Verdana, Geneva, sans-serif;
   font-size: 14px;
   line-height: 1.428571429;
   color: #333333;
@@ -397,8 +397,9 @@ h6,
 .h4,
 .h5,
 .h6 {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: 500;
+  font-family: Verdana, Geneva, sans-serif;
+  font-weight: 700;
+  font-size: 1,8em;
   line-height: 1.1;
   color: inherit;
 }
@@ -466,12 +467,14 @@ h6 .small {
 
 h1,
 .h1 {
-  font-size: 36px;
+  font-size: 46px;
+  text-transform:lowercase;
+  font-weight: 900;
 }
 
 h2,
 .h2 {
-  font-size: 30px;
+  font-size: 38px;
 }
 
 h3,
@@ -3608,6 +3611,8 @@ input[type="button"].btn-block {
   font-size: 12px;
   line-height: 1.428571429;
   color: #999999;
+  text-transform: uppercase;
+  margin-left: -15px;
 }
 
 .dropdown-backdrop {
@@ -4702,7 +4707,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 }
 
 .navbar-default {
-  background-color: #f8f8f8;
+  background-color: #BCD6EC;
   border-color: #e7e7e7;
 }
 
@@ -4721,12 +4726,12 @@ textarea.input-group-sm > .input-group-btn > .btn {
 }
 
 .navbar-default .navbar-nav > li > a {
-  color: #777777;
+  color: #555555;
 }
 
 .navbar-default .navbar-nav > li > a:hover,
 .navbar-default .navbar-nav > li > a:focus {
-  color: #333333;
+  color: #111111;
   background-color: transparent;
 }
 
@@ -4734,7 +4739,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 .navbar-default .navbar-nav > .active > a:hover,
 .navbar-default .navbar-nav > .active > a:focus {
   color: #555555;
-  background-color: #e7e7e7;
+  background-color: #68A2D5;
 }
 
 .navbar-default .navbar-nav > .disabled > a,
@@ -4766,7 +4771,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 .navbar-default .navbar-nav > .open > a:hover,
 .navbar-default .navbar-nav > .open > a:focus {
   color: #555555;
-  background-color: #e7e7e7;
+  background-color: #68A2D5;
 }
 
 @media (max-width: 767px) {
@@ -6467,12 +6472,13 @@ button.close {
 
 .carousel-indicators {
   position: absolute;
-  bottom: 10px;
+  bottom: 20px;
   left: 50%;
   z-index: 15;
   width: 60%;
   padding-left: 0;
   margin-left: -30%;
+  margin-bottom: -5px;
   text-align: center;
   list-style: none;
 }
@@ -6499,15 +6505,23 @@ button.close {
 
 .carousel-caption {
   position: absolute;
-  right: 15%;
-  bottom: 20px;
-  left: 15%;
+  right: 10%;
+  bottom: 30px;
+  left: 10%;
   z-index: 10;
   padding-top: 20px;
   padding-bottom: 20px;
   color: #ffffff;
   text-align: center;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.carousel-caption h1 {
+  text-shadow: -1.5px 0 gray, 0 1.5px gray, 1.5px 0 gray, 0 -1.5px gray;
+}
+
+.carousel-caption p {
+   text-shadow: -1px 0 gray, 0 1px gray, 1px 0 gray, 0 -1px gray;
 }
 
 .carousel-caption .btn {
@@ -6526,8 +6540,8 @@ button.close {
     font-size: 30px;
   }
   .carousel-caption {
-    right: 20%;
-    left: 20%;
+    right: 10%;
+    left: 10%;
     padding-bottom: 30px;
   }
   .carousel-indicators {
@@ -7094,6 +7108,10 @@ th.visible-print,
 td.visible-print {
   display: none !important;
 }
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+ }
 
 @media print {
   .visible-print {

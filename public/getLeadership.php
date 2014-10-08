@@ -31,7 +31,7 @@
                                         $pos = $mysql->getAllLeaders($row[0]);
                                         while ($row2 = mysqli_fetch_array($pos,MYSQL_BOTH)){
                                             echo "<a href=\"../sisters/sisters.php?select=$row2[0]\">" . 
-                                                $mysql->getFullName($row2[0]) . "</a>"; 
+                                                $mysql->getFullName($row2[0]) . "</a><br>"; 
                                         }
                                     echo "</div>";
                                 echo "</td>";
@@ -70,7 +70,7 @@
                                         $pos = $mysql->getAllLeaders($row[0]);
                                         while ($row2 = mysqli_fetch_array($pos,MYSQL_BOTH)){
                                             echo "<a href=\"../sisters/sisters.php?select=$row2[0]\">" .
-                                                $mysql->getFullName($row2[0]) . "</a>"; 
+                                                $mysql->getFullName($row2[0]) . "</a><br>"; 
                                         }
                                     echo "</div>";
                                 echo "</td>";

@@ -13,10 +13,10 @@
 
 <div class="col-md-12">
                      
-    <h2>Approve Sister Testimonial</h2>
+    <h2>Add Sister Testimonial</h2>
     <p>
     
-        Please fill out the form below to add a your own testimonial.
+        Please fill out the form below to add your own testimonial.
     
     </p>
     <p>

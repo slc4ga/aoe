@@ -10,13 +10,14 @@
         <head>
         
         <meta charset="utf-8">
-        <title> A.O.E. Pi - Sisters </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title> A.O.E. Pi - About </title>
             
-        <link rel="stylesheet" href="/~Steph/AOE/bootstrap/css/bootstrap.css" type="text/css">
+        <link rel="stylesheet" href="../bootstrap/css/bootstrap.css" type="text/css">
         
         <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-        <script src="/~Steph/AOE/bootstrap/js/bootstrap.js"></script>
+        <script src="../bootstrap/js/bootstrap.js"></script>
         
         
     </head>
@@ -50,7 +51,7 @@
                         <script type="text/javascript">
                         
                             var select = window.location.href.toString().split("=")[1];
-                            $('.nav li').removeClass('active');
+                            $('.nav-pills li').removeClass('active');
                             if(select == 2) {
                                 $.ajax({
                                     url: 'pihist.php', 
@@ -102,7 +103,7 @@
             window.onload = function() {
                 
                 document.getElementById("aoe").onclick = function() {
-                    $('.nav li').removeClass('active');
+                    $('.nav-pills li').removeClass('active');
                     $.ajax({
                         url: 'aoehist.php', 
                         success: function(data){
@@ -114,7 +115,7 @@
                 }
                 
                 document.getElementById("pi").onclick = function() {
-                    $('.nav li').removeClass('active');
+                    $('.nav-pills li').removeClass('active');
                     $.ajax({
                         url: 'pihist.php', 
                         success: function(data){
@@ -126,7 +127,7 @@
                 }
                 
                 document.getElementById("mission").onclick = function() {
-                    $('.nav li').removeClass('active');
+                    $('.nav-pills li').removeClass('active');
                     $.ajax({
                         url: 'mission.php', 
                         success: function(data){
@@ -138,7 +139,7 @@
                 }
                 
                 document.getElementById("ideals").onclick = function() {
-                    $('.nav li').removeClass('active');
+                    $('.nav-pills li').removeClass('active');
                     $.ajax({
                         url: 'ideals.php', 
                         success: function(data){
@@ -150,7 +151,7 @@
                 }
                 
                 document.getElementById("testimonials").onclick = function() {
-                    $('.nav li').removeClass('active');
+                    $('.nav-pills li').removeClass('active');
                     $.ajax({
                         url: 'testimonials.php', 
                         success: function(data){

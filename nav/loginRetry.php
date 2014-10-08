@@ -34,7 +34,7 @@
                                     <? if(!empty($er)) { 
                                 echo "<div class=\"alert alert-danger\">  
                                         <a class=\"close\" data-dismiss=\"alert\">×</a>  
-                                        <strong>Uh-oh! Looks like something went wrong...</strong>$er
+                                        <strong>Uh-oh! Looks like something went wrong...</strong>$er Need to <a href=\"getPass.php\">reset your password</a>?
                                     </div>"; 
                                            }
                                     ?>

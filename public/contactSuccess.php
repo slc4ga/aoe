@@ -2,6 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title> A.O.E. Pi - Contact Success  </title>
         <link rel="stylesheet" href="../bootstrap/css/bootstrap.css" type="text/css">
         <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
@@ -21,7 +22,7 @@
                                     you as soon as possible. </legend>
                             </div>        
                             <form action="../index.php">
-                                <input type="submit" class="btn btn-success" value="A.O.E. Pi Home">
+                                <input type="submit" class="btn btn-success" value="A.O.E. @ UVa Home">
                             </form>
                         </div>
                     </div>
@@ -30,3 +31,6 @@
         </div>
     </body>
 </html>
+
+
+        

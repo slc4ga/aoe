@@ -10,10 +10,12 @@
     $count = 1;
 
     if($num == 0) {
-        echo "<h4> There are no sisters currently listed in this pledge class. Check out another class to view sister profiles!</h4>";
+        echo "<h4> There are no sisters currently listed in the $class pledge class. Check out another class to view sister profiles!</h4>";
     }
     else {
-
+        echo "<h2>$class";
+        if($class != "Alumnae") { echo " Class"; }
+        echo "</h2>";
         echo "<table class=\"table table-hover\">  
                 <thead>  
                 <tr>  

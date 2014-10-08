@@ -1,4 +1,4 @@
-<form action="/~Steph/AOE/nav/executeLogin.php" method="post" accept-charset="UTF-8">
+<form action="nav/executeLogin.php" method="post" accept-charset="UTF-8">
 
     <input class="form-control" style="margin-bottom: 15px;" type="text" name="un"  
            size="50" <?

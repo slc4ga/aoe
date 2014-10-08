@@ -10,6 +10,7 @@
         <head>
         
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title> A.O.E. Pi - Sisters </title>
             
         <link rel="stylesheet" href="../bootstrap/css/bootstrap.css" type="text/css">
@@ -37,6 +38,8 @@
                             <a href="javascript.void(0);" id="lambda">Lambda Class</a></li>
                         <li id="muLi" >
                             <a href="javascript.void(0);" id="mu">Mu Class</a></li>
+                        <li id="nuLi" >
+                            <a href="javascript.void(0);" id="nu">Nu Class</a></li>
                         <li id="alumLi" >
                             <a href="javascript.void(0);" id="alum">Alumnae</a></li>
                     </ul>
@@ -47,11 +50,11 @@
                     <div id="content">
                         <script type="text/javascript">
                             var select = window.location.href.toString().split("=")[1];
-                            $('.nav li').removeClass('active');
+                            $('.nav-pills li').removeClass('active');
                             if(select == 2) {
                                 $.ajax({
                                     url: 'pledgeclass.php',
-                                    data: { class: 'lambda' },
+                                    data: { class: 'Lambda' },
                                     success: function(data){
                                         $('#content').html(data);   
                                     }
@@ -60,7 +63,7 @@
                             } else if(select == 3) {
                                 $.ajax({
                                     url: 'pledgeclass.php',
-                                    data: { class: 'mu' },
+                                    data: { class: 'Mu' },
                                     success: function(data){
                                         $('#content').html(data);   
                                     }
@@ -75,11 +78,20 @@
                                     }
                                 });
                                 document.getElementById("alumLi").className += " active";
+                            } else if(select == 5) {
+                                $.ajax({
+                                    url: 'pledgeclass.php',
+                                    data: { class: 'Nu' },
+                                    success: function(data){
+                                        $('#content').html(data);   
+                                    }
+                                });
+                                document.getElementById("nuLi").className += " active";
                             } else {
                                 if(isNumber(select)) {
                                     $.ajax({
                                         url: 'pledgeclass.php',
-                                        data: { class: 'kappa' }, 
+                                        data: { class: 'Kappa' }, 
                                         success: function(data){
                                             $('#content').html(data);   
                                         }
@@ -118,10 +130,10 @@
             window.onload = function() {
                 
                 document.getElementById("kappa").onclick = function() {
-                    $('.nav li').removeClass('active');
+                    $('.nav-pills li').removeClass('active');
                     $.ajax({
                         url: 'pledgeclass.php',
-                        data: { class: 'kappa' },
+                        data: { class: 'Kappa' },
                         success: function(data){
                             $('#content').html(data);   
                         }
@@ -131,10 +143,10 @@
                 }
                 
                 document.getElementById("lambda").onclick = function() {
-                    $('.nav li').removeClass('active');
+                    $('.nav-pills li').removeClass('active');
                     $.ajax({
                         url: 'pledgeclass.php',
-                        data: { class: 'lambda' },
+                        data: { class: 'Lambda' },
                         success: function(data){
                             $('#content').html(data);   
                         }
@@ -144,10 +156,10 @@
                 }
                 
                 document.getElementById("mu").onclick = function() {
-                    $('.nav li').removeClass('active');
+                    $('.nav-pills li').removeClass('active');
                     $.ajax({
                         url: 'pledgeclass.php',
-                        data: { class: 'mu' },
+                        data: { class: 'Mu' },
                         success: function(data){
                             $('#content').html(data);   
                         }
@@ -157,7 +169,7 @@
                 }
                 
                 document.getElementById("alum").onclick = function() {
-                    $('.nav li').removeClass('active');
+                    $('.nav-pills li').removeClass('active');
                     $.ajax({
                         url: 'pledgeclass.php',
                         data: { class: 'Alumnae' },
@@ -166,6 +178,19 @@
                         }
                     });
                     document.getElementById("alumLi").className += " active";
+                    return false;
+                }
+
+                document.getElementById("nu").onclick = function() {
+                    $('.nav-pills li').removeClass('active');
+                    $.ajax({
+                        url: 'pledgeclass.php',
+                        data: { class: 'Nu' },
+                        success: function(data){
+                            $('#content').html(data);   
+                        }
+                    });
+                    document.getElementById("nuLi").className += " active";
                     return false;
                 }
                 

@@ -48,10 +48,10 @@
                         } else {
                             while ($row = mysqli_fetch_array($result)) {
                                 echo "<tr>";
-                                echo "<td><a class='inline' href=\"#" . $row[0] . "\">" . $row[1] . "</a></td>";
+                                echo "<td>" . $mysql->getFullName($row[1]) . "</td>";
                                 $array = explode(" ", $row[2]);
-                                echo "<td>" . $array[0] . " " . $array[1] . " " . $array[2] . " " . $array[3] . " " . 
-                                    $array[4] . "...</td>";
+                                echo "<td><a class='inline' href=\"#" . $row[0] . "\">" . $array[0] . " " . $array[1] . " " . $array[2] . " " . $array[3] . " " . 
+                                    $array[4] . "...</a></td>";
                                 // checkboxes
                                 echo "<td><div class=\"controls\"><input name=\"cb".$row['0']."\"type=\"checkbox\" 
                                         ></label></div></td>";
@@ -65,6 +65,8 @@
                                          echo "<h2>" . $mysql->getFullName($row[1]) . "</h2>";
                                          echo "<br><p><b>Message: </b><br> <em>" . $row[2] . "</em><br><br>";  
                                          echo"</p>";
+                                         echo "<hr><a class=\"btn btn-primary\" href=\"editTestimonial.php?req=$row[0]\">
+                                                Edit</a><br>";
                                     echo "</div>";
                                 echo "</div>";
                             }
@@ -108,10 +110,10 @@
                         } else {
                             while ($row = mysqli_fetch_array($result)) {
                                 echo "<tr>";
-                                echo "<td><a class='inline' href=\"#" . $row[0] . "\">" . $row[1] . "</a></td>";
+                                echo "<td>" . $mysql->getFullName($row[1]) . "</td>";
                                 $array = explode(" ", $row[2]);
-                                echo "<td>" . $array[0] . " " . $array[1] . " " . $array[2] . " " . $array[3] . " " . 
-                                    $array[4] . "...</td>";
+                                echo "<td><a class='inline' href=\"#" . $row[0] . "\">" . $array[0] . " " . $array[1] . " " . $array[2] . " " . $array[3] . " " . 
+                                    $array[4] . "...</a></td>";
                                 // checkboxes
                                 echo "<td>" . "<a class=\"btn btn-sm btn-danger\" href=\"deleteTestimonial.php?req=$row[0]\">
                                                 Delete</a></td>";

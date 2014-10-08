@@ -26,6 +26,7 @@
         <head>
         
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title> A.O.E Pi Account </title>
             
         <link rel="stylesheet" href="../bootstrap/css/bootstrap.css" type="text/css">
@@ -46,7 +47,9 @@
             ?>
             <div class="col-md-12">
                 <?
-                    echo "<h1>Welcome " . $mysql->getFullName($_SESSION['user_id']) . "!</h1><hr>";
+                    $str = $mysql->getFullName($_SESSION['user_id']);
+                    $array = explode(" ", $str);
+                    echo "<h1>Welcome " . $array[0] . "!</h1><hr>";
                 ?>
             </div>
 
@@ -56,14 +59,25 @@
                     <ul class="nav nav-pills nav-stacked">
                         <li id="profileLi" class="active">
                             <a href="javascript.void(0);" id="profile">View Profile</a></li>
+                        <li id="calendarLi" >
+                            <a href="javascript.void(0);" id="calendar">Calendar</a></li>
+                        <li id="pointsLi" >
+                            <a href="javascript.void(0);" id="points">Points</a></li>
                         <li id="editLi" >
                             <a href="javascript.void(0);" id="edit">Edit Profile</a></li>
                         <li id="testimonialLi" >
                             <a href="javascript.void(0);" id="testimonial">Submit Testimonial</a></li>
+                        <li id="passwordLi" >
+                            <a href="javascript.void(0);" id="password">Change Password</a></li>
                         <?
                             if($mysql->checkWebmaster($_SESSION['user_id'])) {
                                 echo "<li>
                                     <a href='../webmaster/webmaster.php' id='webmaster'>Webmaster Capabilities</a></li>";
+                            }
+
+                            if($mysql->checkExec($_SESSION['user_id']) || $mysql->checkWebmaster($_SESSION['user_id'])) {
+                                echo "<li>
+                                    <a href='../exec/exec.php' id='exec'>Exec Capabilities</a></li>";
                             }
                         ?>
                     </ul>
@@ -86,7 +100,7 @@
                         <script type="text/javascript">
                         
                             var select = window.location.href.toString().split("=")[1];
-                            $('.nav li').removeClass('active');
+                            $('.nav-pills li').removeClass('active');
                             if(typeof select === 'undefined' || select.indexOf(1) != -1){
                                 $.ajax({
                                     url: 'profile.php',
@@ -111,6 +125,30 @@
                                     }
                                 });
                                 document.getElementById("testimonialLi").className += " active";
+                            } else if(select.indexOf(4) != -1) {
+                                $.ajax({
+                                    url: 'resetPass.php',
+                                    success: function(data){
+                                        $('#content').html(data);   
+                                    }
+                                });
+                                document.getElementById("passwordLi").className += " active";
+                            } else if(select.indexOf(5) != -1) {
+                                $.ajax({
+                                    url: 'calendar.php',
+                                    success: function(data){
+                                        $('#content').html(data);   
+                                    }
+                                });
+                                document.getElementById("calendarLi").className += " active";
+                            } else if(select.indexOf(6) != -1) {
+                                $.ajax({
+                                    url: 'points.php',
+                                    success: function(data){
+                                        $('#content').html(data);   
+                                    }
+                                });
+                                document.getElementById("pointsLi").className += " active";
                             }
                         </script>
                     </div>
@@ -124,7 +162,7 @@
             window.onload = function() {
                 
                 document.getElementById("profile").onclick = function() {
-                    $('.nav li').removeClass('active');
+                    $('.nav-pills li').removeClass('active');
                     $.ajax({
                         url: 'profile.php',
                         success: function(data){
@@ -136,7 +174,7 @@
                 }
                 
                 document.getElementById("edit").onclick = function() {
-                    $('.nav li').removeClass('active');
+                    $('.nav-pills li').removeClass('active');
                     $.ajax({
                         url: 'editProfile.php',
                         success: function(data){
@@ -148,7 +186,7 @@
                 }
                 
                 document.getElementById("testimonial").onclick = function() {
-                    $('.nav li').removeClass('active');
+                    $('.nav-pills li').removeClass('active');
                     $.ajax({
                         url: 'submitTestimonial.php',
                         success: function(data){
@@ -158,7 +196,42 @@
                     document.getElementById("testimonialLi").className += " active";
                     return false;
                 }
+
+                document.getElementById("password").onclick = function() {
+                    $('.nav-pills li').removeClass('active');
+                    $.ajax({
+                        url: 'resetPass.php',
+                        success: function(data){
+                            $('#content').html(data);   
+                        }
+                    });
+                    document.getElementById("passwordLi").className += " active";
+                    return false;
+                }
                 
+                document.getElementById("calendar").onclick = function() {
+                    $('.nav-pills li').removeClass('active');
+                    $.ajax({
+                        url: 'calendar.php',
+                        success: function(data){
+                            $('#content').html(data);   
+                        }
+                    });
+                    document.getElementById("calendarLi").className += " active";
+                    return false;
+                }
+                
+                document.getElementById("points").onclick = function() {
+                    $('.nav-pills li').removeClass('active');
+                    $.ajax({
+                        url: 'points.php',
+                        success: function(data){
+                            $('#content').html(data);   
+                        }
+                    });
+                    document.getElementById("pointsLi").className += " active";
+                    return false;
+                }
             }
         </script>
     </body>

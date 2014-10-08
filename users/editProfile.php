@@ -28,7 +28,8 @@
                     echo "<div style=\"text-align: center; border-style: solid; border-radius: 1px; 
                     height: 300px; width: 250px\">";
                     if(file_exists($imgPath)) {
-                        echo "<img src=\"$imgPath\" style=\"height: 294px; width: 244px\">";
+                        $imgPath="http://alphaomegaepsilonatuva.com/img/" . $_SESSION['user_id'] . ".jpg?" . Time();
+                    echo "<img src=\"$imgPath\" style=\"height: 294px; width: 244px\">";
                     } else {
                         echo "<br><br><br><br><em><b>No picture uploaded yet!</b></em>";
                     }
@@ -51,7 +52,7 @@
                     <? echo $row[3]; ?>
                 <br><br>
                 <span style="font-size:1.25em"><b> Year: </b></span> 
-                <input type="number" name="year" class = "form-control" style="width: 50%" min="2014" max="2040" 
+                <input type="number" name="year" class = "form-control" style="width: 50%" min="2005" max="2040" 
                        <? 
                             if(isset($row[4])) {
                                 echo "value=\"$row[4]\""; 
@@ -69,7 +70,7 @@
                         <input type="radio" id="international" name="loc" value="international"/> International <br><br>
                     </div>
                     <div id="hometown" class="col-md-12">
-                        <input type="text" name="hometown" class="form-control" style="width: 100%"
+                        <input type="text" name="hometown" class="form-control" style="width: 70%"
                         <? 
                             if(isset($row[5]) && isset($row[6])) {
                                 echo "value=\"$row[5]\""; 
@@ -87,7 +88,6 @@
             </div>
         </div>
         <br>
-            <? echo $row[7]; ?>
         <div class="row">
             <div class="col-md-3">
                 <span style="font-size:1.25em" ><b> Major: </b></span><br>
@@ -99,6 +99,8 @@
                        <? if($row[7] == "Computer Engineering") { echo "checked"; } ?> /> Computer <br>
                 <input type="radio" id="major" name="major" value="Electrical Engineering"
                        <? if($row[7] == "Electrical Engineering") { echo "checked"; } ?> /> Electrical <br>
+                <input type="radio" id="major" name="major" value="ES - Materials Science"
+                       <? if($row[7] == "ES - Materials Science") { echo "checked"; } ?> /> ES - Materials <br>
                 <input type="radio" id="major" name="major" value="Mechanical Engineering"
                        <? if($row[7] == "Mechanical Engineering") { echo "checked"; } ?> /> Mechanical <br>
                 <input type="radio" id="major" name="major" value="Biology"
@@ -113,7 +115,11 @@
                 <input type="radio" id="major" name="major" value="Computer Science" 
                        <? if($row[7] == "Computer Science") { echo "checked"; } ?> /> Computer Science <br>
                 <input type="radio" id="major" name="major" value="Engineering Science"
-                       <? if($row[7] == "Engineering Science") { echo "checked"; } ?> /> Engineering Science <br>
+                       <? if($row[7] == "Engineering Science") { echo "checked"; } ?> /> Engineering Science<br>
+                <input type="radio" id="major" name="major" value="ES - Nanomedicine"
+                       <? if($row[7] == "ES - Nanomedicine") { echo "checked"; } ?> /> ES - Nanomedicine <br>
+                <input type="radio" id="major" name="major" value="ES - Structural Mechanics"
+                       <? if($row[7] == "ES - Structural Mechanics") { echo "checked"; } ?> /> ES - Structural Mech <br>
                 <input type="radio" id="major" name="major" value="Systems Engineering"
                        <? if($row[7] == "Systems Engineering") { echo "checked"; } ?> /> Systems <br>
             </div>
@@ -182,6 +188,9 @@
                                     echo $array[$i];
                                 }
                             }
+                        if(count($array) - 1 == 0 && strlen($row[11]) > 0) {
+                            echo $row[11];
+                        }
                         ?></textarea>
             </div>
         </div>

@@ -29,7 +29,7 @@
                             echo "<tr>";
                             echo $row[2];
                             echo "<br><br><p class=\"text-right\"><em> - " . $mysql->getFullName($row[1]) . "</em></p></tr>";
-                           
+                            echo "<br><br>";
                         }
                     }
                     echo "</tbody>  

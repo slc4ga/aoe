@@ -22,6 +22,7 @@
         <head>
         
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title> A.O.E. Pi - Webmaster </title>
             
         <link rel="stylesheet" href="../bootstrap/css/bootstrap.css" type="text/css">
@@ -54,9 +55,9 @@
                         <li id="pcLi" class="active">
                             <a href="javascript.void(0);" id="pc">Add Pledge Class</a></li>
                         <li id="sistersLi" >
-                            <a href="javascript.void(0);" id="sisters">Manage Sisters</a></li>
+                            <a href="javascript.void(0);" id="sistersedit">Manage Sisters</a></li>
                         <li id="leadershipLi" >
-                            <a href="javascript.void(0);" id="leadership">Update Leadership</a></li>
+                            <a href="javascript.void(0);" id="leadershipedit">Update Leadership</a></li>
                         <li id="testimonialsLi" >
                             <a href="javascript.void(0);" id="testimonials">Manage Testimonials</a></li>
                     </ul>
@@ -64,11 +65,21 @@
                  </div>
                 
                 <div class="col-md-9">
+                        <?
+                            $message = $_GET['t'];
+                            if(isset($message) && $message == "yes") {
+                                echo "<div class=\"alert alert-success\">  
+                                        <a class=\"close\" data-dismiss=\"alert\">×</a>  
+                                        <strong>Testimonial edit succeeded!</strong>
+                                    </div>";     
+                            }
+                        ?>
                     <div id="content">
+                    
                         <script type="text/javascript">
                         
                             var select = window.location.href.toString().split("=")[1];
-                            $('.nav li').removeClass('active');
+                            $('.nav-pills li').removeClass('active');
                             if(typeof select === 'undefined' || select.indexOf(1) != -1){
                                 $.ajax({
                                     url: 'addPC.php',
@@ -112,7 +123,7 @@
             window.onload = function() {
                 
                 document.getElementById("pc").onclick = function() {
-                    $('.nav li').removeClass('active');
+                    $('.nav-pills li').removeClass('active');
                     $.ajax({
                         url: 'addPC.php',
                         success: function(data){
@@ -123,8 +134,8 @@
                     return false;
                 }
                 
-                document.getElementById("sisters").onclick = function() {
-                    $('.nav li').removeClass('active');
+                document.getElementById("sistersedit").onclick = function() {
+                    $('.nav-pills li').removeClass('active');
                     $.ajax({
                         url: 'editSisters.php',
                         success: function(data){
@@ -135,8 +146,8 @@
                     return false;
                 }
                 
-                document.getElementById("leadership").onclick = function() {
-                    $('.nav li').removeClass('active');
+                document.getElementById("leadershipedit").onclick = function() {
+                    $('.nav-pills li').removeClass('active');
                     $.ajax({
                         url: 'editLeadership.php',
                         success: function(data){
@@ -148,7 +159,7 @@
                 }
                 
                 document.getElementById("testimonials").onclick = function() {
-                    $('.nav li').removeClass('active');
+                    $('.nav-pills li').removeClass('active');
                     $.ajax({
                         url: 'addTestimonials.php',
                         success: function(data){
