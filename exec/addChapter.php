@@ -11,10 +11,12 @@
 
     $date = $_GET['date'];
     $name = "Chapter";
+    $late = "Late Chapter";
     $points = CHAPTER_POINTS;
     $category = 9;
 
     $mysql->addEvent($name, $date, $points, $category);
+    $mysql->addEvent($late, $date, $points/2, $category);
     $mysql->setChapterPass($mysql->generateChapterPassword());
     
     echo '<div class="panel-body">';
@@ -26,9 +28,9 @@
         } else {
             while ($chapter = mysqli_fetch_array($chaps)) {
                 echo "<div class='col-md-4 chapter'>";
-                    echo date('n/j/Y', strtotime($chapter[3])) . " ($chapter[6])";
+                    echo date('n/j/Y', $chapter[0]) . " ($chapter[1])";
                 echo "</div>";
-
+                $chapter = mysqli_fetch_array($chaps)
             }
         }
     echo '</div>';

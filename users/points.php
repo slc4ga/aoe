@@ -14,7 +14,7 @@
     <?
         $userPoints = $mysql->getPointsInMonthForUser($_SESSION['user_id']);
         $monthPoints = $mysql->getPointsInMonth();
-        echo "<h4>" . date('F', time()) . " points: " . $userPoints . "/" . $monthPoints . "</h4>";
+        echo "<h4 id='monthly-points'>" . date('F', time()) . " points: " . $userPoints . "/" . $monthPoints . "</h4>";
 
         $daysLeft = date('t', time()) - date('d', time());
         if($daysLeft < 10) {
@@ -43,7 +43,7 @@
                                 <a data-toggle="collapse" data-parent="#accordion" href="#' . $row[0] . '">';
                                     echo $row[1];
                 echo '          </a>
-                                <div class="pull-right">
+                                <div class="pull-right" id="' . $row[0] . '-points">
                                     ' . $mysql->getPointsInCategoryForUser($row[0]) . '/' . $mysql->getPointsInCategory($row[0]) . '
                                 </div>
                             </h4>
@@ -52,7 +52,56 @@
                             <div class="panel-body">';
                                 // chapter
                                 if($row[0] == 9) {
-                                    include 'chapterForm.php';
+                                    echo "<div id='chapterLoginMessage'></div>
+                                            <div id='chapterLoginButton'>";
+                                    if(date('w', time()) == '0') { // if sunday
+                                        $today = date('Y-m-d', time());
+                                        $today_formatted = date('n/j/Y', time());
+                                        
+                                        if(time() < strtotime("7:50 PM") && time() < strtotime("8:05 PM")) { //on time
+                                            if($mysql->checkChapterAttendance($_SESSION['user_id'], date('Y-m-d', time())) == 0) {
+                                                echo "<div class='row'>
+                                                    <div class='col-md-4 col-md-offset-4'>";
+                                                echo "<button style='width: 100%' class='btn btn-lg btn-success' onclick=\"ontimeChapter('"
+                                                    . $_SESSION['user_id'] . "','" . $today . "')\">Check In <br>
+                                                    ($today_formatted)</button>";
+                                                echo "  </div>
+                                                  </div>";
+                                            } else {
+                                                echo "<div class='row'>
+                                                        <div class='col-md-6 col-md-offset-3'>
+                                                            <h5>Thanks, you've already checked in today!</h5>
+                                                        </div>
+                                                    </div>";    
+                                            }
+                                        } else if(time() < strtotime("8:15 PM")) { // late
+                                                if($mysql->checkChapterAttendance($_SESSION['user_id'], date('Y-m-d', time())) == 0) {
+                                                    echo "<div class='row'>
+                                                            <div class='col-md-4 col-md-offset-4'>";
+                                                    echo "<button style='width: 100%' class='btn btn-lg btn-warning'
+                                                            onclick=\"lateChapter('" . $_SESSION['user_id'] . "','" . $today . "')\">
+                                                                Check In <br> ($today_formatted)</button>";
+                                                    echo "  </div>
+                                                        </div>";
+                                                } else {
+                                                    echo "<div class='row'>
+                                                            <div class='col-md-6 col-md-offset-3'>
+                                                                <h5>Thanks, you've already checked in today!</h5>
+                                                            </div>
+                                                        </div>";    
+                                                }
+                                        } else if(time() < strtotime("9:15 PM")) { // too late
+                                            echo "<div class='row'>
+                                                <div class='col-md-12'>";
+                                            echo "<div class='alert alert-danger' role='alert'>
+                                                    <strong>Oh snap!</strong> You were too late to chapter to check in. 
+                                                    Try to be on time next time!
+                                                </div>";
+                                            echo "</div>
+                                                </div>";
+                                        }
+                                    }
+                                    echo "</div>";
                                     echo "<br>";
                                     $chaps = $mysql->getChapters();
                                     if($chaps->num_rows == 0) {
@@ -60,7 +109,7 @@
                                     } else {
                                         while ($chapter = mysqli_fetch_array($chaps)) {
                                             echo "<div class='col-md-4 chapter'>";
-                                                echo date('n/j/Y', strtotime($chapter[3])) . " ($chapter[6])";
+                                                echo date('n/j/Y', strtotime($chapter[0]));
                                             echo "</div>";
 
                                         }

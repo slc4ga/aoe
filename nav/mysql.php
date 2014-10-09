@@ -485,7 +485,7 @@ class Mysql {
     }
     
     function getChapters() {
-        $sql = "select * from events inner join chapterPass on events.id=chapterPass.eventId where category=9"; 
+        $sql = "select distinct date, pass from events inner join chapterPass on events.id=chapterPass.eventId where category=9 order by date asc"; 
         $result = $this->mysqli->query($sql) or die("get chapters");  
         return $result;
     }
@@ -504,31 +504,54 @@ class Mysql {
     function setChapterPass($pw) {
         $sql = "select id from events order by id desc limit 1";
         $result = $this->mysqli->query($sql) or die("get chapter id for pass");  
-        $id = $result->fetch_array(MYSQLI_NUM)[0];
+        $lateId = $result->fetch_array(MYSQLI_NUM)[0];
         
+        $sql = "insert into chapterPass values($lateId, '$pw')";
+        $result = $this->mysqli->query($sql) or die("set late chapter pass"); 
+        
+        $id = $lateId - 1;
         $sql = "insert into chapterPass values($id, '$pw')";
         $result = $this->mysqli->query($sql) or die("set chapter pass"); 
         return $result;
     }
     
     function getPointsInMonth() {
-        $sql = "select points from events where date > '" . date('Y-m-1', time()) . "' and date < '". date('Y-m-t', time()) . "' and not category=10 and not category=11";
+        $sql = "select max(points) from events where date > '" . date('Y-m-1', time()) . "' and date < '". date('Y-m-t', time()) . "' and not category=10 and not category=11 and not category=9";
         $result = $this->mysqli->query($sql) or die("get points in month");  
         $points = 0;
         while($row = mysqli_fetch_array($result)) {
             $points += $row[0];
         }
+        
+        // add chapter points
+        $sql = "select distinct date, max(points)points from events where category=9 and date <= '" . date('Y-m-d', time()) . "'";
+        $result = $this->mysqli->query($sql) or die("get points in category for user");  
+        while($row = mysqli_fetch_array($result)) {
+            $points += $row[1];
+        }
+        return $points;
+        
         return $points;
     }
     
     function getPointsInCategory($cat) {
-        $sql = "select points from events where category=$cat and date < '" . date('Y-m-d', time()) . "'";
-        $result = $this->mysqli->query($sql) or die("get points in category");  
-        $points = 0;
-        while($row = mysqli_fetch_array($result)) {
-            $points += $row[0];
+        if($cat == 9) {
+            $sql = "select distinct date, max(points)points from events where category=$cat and date <= '" . date('Y-m-d', time()) . "'";
+            $result = $this->mysqli->query($sql) or die("get points in category for user");  
+            $points = 0;
+            while($row = mysqli_fetch_array($result)) {
+                $points += $row[1];
+            }
+            return $points;
+        } else {
+            $sql = "select points from events where category=$cat and date <= '" . date('Y-m-d', time()) . "'";
+            $result = $this->mysqli->query($sql) or die("get points in category");  
+            $points = 0;
+            while($row = mysqli_fetch_array($result)) {
+                $points += $row[0];
+            }
+            return $points;
         }
-        return $points;
     }
     
     function getPointsInMonthForUser($un) {
@@ -554,13 +577,23 @@ class Mysql {
             return $result->num_rows * COMMITTEE_POINTS;
         } 
         
-        $sql = "select points from events inner join points on events.id = points.eventId where category=$cat and date < '" . date('Y-m-d', time()) . "' and points.username = '$un' and approved=1";
-        $result = $this->mysqli->query($sql) or die("get points in category for user");  
-        $points = 0;
-        while($row = mysqli_fetch_array($result)) {
-            $points += $row[0];
+        if($cat == 9) {
+            $sql = "select distinct date, points from events inner join points on events.id = points.eventId where category=$cat and date <= '" . date('Y-m-d', time()) . "' and points.username = '$un' and approved=1";
+            $result = $this->mysqli->query($sql) or die("get points in category for user");  
+            $points = 0;
+            while($row = mysqli_fetch_array($result)) {
+                $points += $row[1];
+            }
+            return $points;
+        } else {
+            $sql = "select points from events inner join points on events.id = points.eventId where category=$cat and date <= '" . date('Y-m-d', time()) . "' and points.username = '$un' and approved=1";
+            $result = $this->mysqli->query($sql) or die("get points in category for user");  
+            $points = 0;
+            while($row = mysqli_fetch_array($result)) {
+                $points += $row[0];
+            }
+            return $points;
         }
-        return $points;
     }
     
     function submitAttendance($un, $eventId) { 
@@ -569,9 +602,47 @@ class Mysql {
         return $result;
     }
     
+    function attendChapter($username, $date, $pw, $ontime){ 
+        if($ontime == 0) {
+            $name = "Late Chapter";
+            $html = '<div class="alert alert-warning" role="alert">
+                        You were a little late, but your attendance was recorded!
+                    </div>';
+        } else {
+            $name = "Chapter";
+            $html = '<div class="alert alert-success" role="alert">
+                        Thanks for being on time - your attendance was recorded!
+                    </div>';
+        }
+        $sql = "select id from events where category=9 and date='" . date('Y-m-d', strtotime($date)) . "' and event='$name'";
+        $result = $this->mysqli->query($sql) or die("find current chapter id");  
+        $id = mysqli_fetch_array($result)[0];
+        
+        // check password
+        $sql = "select pass from chapterPass where eventId=$id";
+        $result = $this->mysqli->query($sql) or die("find current chapter password");  
+        $pass = mysqli_fetch_array($result)[0];
+        
+        if($pass == $pw) {
+            $sql = "insert into points values($id, '$username', 1)";
+            $result = $this->mysqli->query($sql) or die("add chapter attendance");  
+        } else {
+            $html = '<div class="alert alert-danger" role="alert">
+                        That password wasn\'t right..try again!
+                    </div>';
+        }
+        return $html;
+    }
+    
     function checkAttendance($un, $eventId) {
         $sql = "select * from points where username = '$un' and eventId = $eventId";
         $result = $this->mysqli->query($sql) or die("check attendance");  
+        return $result->num_rows;    
+    }
+    
+    function checkChapterAttendance($un, $date) {
+        $sql = "select * from points inner join events on points.eventId=events.id where username = '$un' and date = '$date'";
+        $result = $this->mysqli->query($sql) or die("check chapter attendance");  
         return $result->num_rows;    
     }
     

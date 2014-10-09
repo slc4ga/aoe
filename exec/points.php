@@ -43,7 +43,7 @@
                                     } else {
                                         while ($chapter = mysqli_fetch_array($chaps)) {
                                             echo "<div class='col-md-4 chapter'>";
-                                                echo date('n/j/Y', strtotime($chapter[3])) . " ($chapter[6])";
+                                                echo date('n/j/Y', strtotime($chapter[0])) . " ($chapter[1])";
                                             echo "</div>";
 
                                         }

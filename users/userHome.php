@@ -36,7 +36,7 @@
         <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
         <script src="../bootstrap/js/bootstrap.js"></script>
-        
+        <script src="../bootstrap/js/bootbox.js"></script>
         
     </head>
     <body>
@@ -169,7 +169,71 @@
                             $('#' + divId).html(data);
                         }
                     });
-                    return false;
+                return false;
+            }
+             
+            function ontimeChapter(username, date) {
+                bootbox.prompt("What is the password for this chapter?", function(result) {                
+                    if (result === null) {                                             
+                        Example.show("Prompt dismissed");                              
+                    } else {
+                        $.ajax({
+                            url: "chapterLogin.php",
+                            data: { username : username,
+                                    date : date,
+                                    password : result,
+                                    ontime : 1 },
+                            success: function(data){  
+                                $('#chapterLoginMessage').html(data);
+                                $('#chapterLoginButton').html("<div class='row'><div class='col-md-6 col-md-offset-3'><h5>Thanks, you've already checked in today!</h5></div></div>");
+                                $.ajax({
+                                    url: "monthlyPoints.php",
+                                    success: function(data){  
+                                        $('#monthly-points').html(data);
+                                    }
+                                }); 
+                                $.ajax({
+                                    url: "categoryPoints.php",
+                                    success: function(data){  
+                                        $('#9-points').html(data);
+                                    }
+                                });
+                            }
+                         });                     
+                    }
+                });
+            }
+             
+            function lateChapter(username, date) {
+                bootbox.prompt("What is the password for this chapter?", function(result) {                
+                    if (result === null) {                                             
+                        Example.show("Prompt dismissed");                              
+                    } else {
+                        $.ajax({
+                            url: "chapterLogin.php",
+                            data: { username : username,
+                                    date : date,
+                                    password : result,
+                                    ontime : 0 },
+                            success: function(data){  
+                                $('#chapterLoginMessage').html(data);
+                                $('#chapterLoginButton').html("<div class='row'><div class='col-md-6 col-md-offset-3'><h5>Thanks, you've already checked in today!</h5></div></div>");
+                                $.ajax({
+                                    url: "monthlyPoints.php",
+                                    success: function(data){  
+                                        $('#monthly-points').html(data);
+                                    }
+                                }); 
+                                $.ajax({
+                                    url: "categoryPoints.php",
+                                    success: function(data){  
+                                        $('#9-points').html(data);
+                                    }
+                                });
+                            }
+                         });                     
+                    }
+                });
             }
              
             window.onload = function() {
