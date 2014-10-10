@@ -374,6 +374,18 @@ img {
     text-align: center;
 }
 
+.ontime {
+    background-color: #dff0d8;
+}
+
+.missed {
+    background-color: #f2dede;
+}
+
+.late {
+    background-color: #fcf8e3;
+}
+
 hr {
   margin-top: 20px;
   margin-bottom: 20px;

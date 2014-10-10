@@ -175,7 +175,7 @@
             function ontimeChapter(username, date) {
                 bootbox.prompt("What is the password for this chapter?", function(result) {                
                     if (result === null) {                                             
-                        Example.show("Prompt dismissed");                              
+                        // do nothing                             
                     } else {
                         $.ajax({
                             url: "chapterLogin.php",
@@ -207,7 +207,7 @@
             function lateChapter(username, date) {
                 bootbox.prompt("What is the password for this chapter?", function(result) {                
                     if (result === null) {                                             
-                        Example.show("Prompt dismissed");                              
+                        // do nothing                            
                     } else {
                         $.ajax({
                             url: "chapterLogin.php",

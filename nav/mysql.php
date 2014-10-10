@@ -486,6 +486,7 @@ class Mysql {
     
     function getChapters() {
         $sql = "select distinct date, pass from events inner join chapterPass on events.id=chapterPass.eventId where category=9 order by date asc"; 
+        echo $sql;
         $result = $this->mysqli->query($sql) or die("get chapters");  
         return $result;
     }
@@ -644,6 +645,12 @@ class Mysql {
         $sql = "select * from points inner join events on points.eventId=events.id where username = '$un' and date = '$date'";
         $result = $this->mysqli->query($sql) or die("check chapter attendance");  
         return $result->num_rows;    
+    }
+    
+    function checkChapterPoints($un, $date) {
+        $sql = "select points from points inner join events on points.eventId=events.id where username = '$un' and date = '$date'";
+        $result = $this->mysqli->query($sql) or die("check chapter points");  
+        return $result;    
     }
     
     function getChairPositionPoints($un) {
