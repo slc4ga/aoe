@@ -486,7 +486,6 @@ class Mysql {
     
     function getChapters() {
         $sql = "select distinct date, pass from events inner join chapterPass on events.id=chapterPass.eventId where category=9 order by date asc"; 
-        echo $sql;
         $result = $this->mysqli->query($sql) or die("get chapters");  
         return $result;
     }

@@ -1,4 +1,7 @@
+<h4>On add chapter</h4>
 <?
+
+echo "start";
     require_once('../nav/mysql.php');
 echo "here";
     require_once('../nav/constants.php');
@@ -38,7 +41,6 @@ echo "3";
                 echo "<div class='col-md-4 chapter'>";
                     echo date('n/j/Y', $chapter[0]) . " ($chapter[1])";
                 echo "</div>";
-                $chapter = mysqli_fetch_array($chaps)
             }
         }
     echo '</div>';
