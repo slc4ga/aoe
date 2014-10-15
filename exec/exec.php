@@ -16,6 +16,11 @@
         }
     }
 
+    $add = $_GET['add'];
+    echo "<script>
+            var add = '$add';
+            </script>";
+
 ?>
 
 <!DOCTYPE html>
@@ -56,7 +61,6 @@
                         <li id="leadershipLi" >
                             <a href="javascript.void(0);" id="leadershipedit">Update Leadership</a></li>
                     </ul>
-                     
                  </div>
                 
                 <div class="col-md-9">
@@ -64,8 +68,11 @@
                     
                         <script type="text/javascript">
                         
-                            var select = window.location.href.toString().split("=")[1];
+                            var select = window.location.href.toString().split("select")[1];
                             $('.nav-pills li').removeClass('active');
+                            if(typeof select === 'undefined') {} else {
+                                select = select.substring(1);
+                            }
                             if(typeof select === 'undefined' || select.indexOf(1) != -1){
                                 $.ajax({
                                     url: 'points.php',

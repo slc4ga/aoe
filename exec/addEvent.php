@@ -14,6 +14,6 @@
     $category = $_POST['category'];
     
     $mysql->addEvent($name, $date, $points, $category);
-    header("location: exec.php");
+    header("location: exec.php?add=success");
 
 ?>
