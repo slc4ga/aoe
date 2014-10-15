@@ -17,8 +17,12 @@
     }
 
     $add = $_GET['add'];
+    $exempt = $_GET['exempt'];
     echo "<script>
             var add = '$add';
+            </script>";
+    echo "<script>
+            var exempt = '$exempt';
             </script>";
 
 ?>

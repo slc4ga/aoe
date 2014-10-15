@@ -10,9 +10,8 @@
 
 <div id="points" class='col-md-11'>
     <h2 style="color:#0088cc"> Manage Points </h2>
-    <div id="addsuccess">
-
-    </div>
+    <div id="addsuccess"></div>
+    <div id="exemptsuccess"></div>
     <hr>
     <div class="row">
         <div class="col-md-2"></div>
@@ -23,6 +22,22 @@
         </div>
     </div>
     <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                  Chapter Attendance Exemption
+                </a>
+              </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse">
+              <div class="panel-body">
+                  <?
+                    include 'attendanceExemptionForm.php';
+                  ?>
+              </div>
+            </div>
+          </div>
         <? 
             $result = $mysql->getPointsCategories();
             while ($row = mysqli_fetch_array($result)) {
@@ -99,6 +114,10 @@
     if(add === 'success') {
         $('#addsuccess').html(
           "<div class=\"alert alert-success alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span> </button> <strong>Nice!</strong> Your event was added.</div>"  
+        );
+    } else if(exempt === 'success') {
+        $('#exemptsuccess').html(
+          "<div class=\"alert alert-success alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span> </button> <strong>Nice!</strong> Your attendance exemption was added.</div>"  
         );
     }
 </script>

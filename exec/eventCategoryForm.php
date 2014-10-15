@@ -6,7 +6,7 @@
         </div>
         <div class="col-md-6">
             <input class="btn btn-primary" style="width: 100%;" 
-                   type="submit" value="Add Category" />
+                   type="submit" value="Add Event Category" />
         </div>
     </div>
     <br>

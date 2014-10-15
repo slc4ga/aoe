@@ -177,7 +177,7 @@ class Mysql {
     }
     
     function getAllActiveSisters() {
-        $sql = "select username,first_name,last_name from profiles where not pc='Alumnae' order by first_name asc";
+        $sql = "select username,first_name,last_name from profiles where not pc like '%Alumnae%' order by first_name asc";
         $result = $this->mysqli->query($sql) or die("pledge class members");
         return $result;
     }
@@ -516,7 +516,7 @@ class Mysql {
     }
     
     function getPointsInMonth() {
-        $sql = "select max(points) from events where date > '" . date('Y-m-1', time()) . "' and date < '". date('Y-m-t', time()) . "' and not category=10 and not category=11 and not category=9";
+        $sql = "select points from events where date > '" . date('Y-m-1', time()) . "' and date < '". date('Y-m-t', time()) . "' and not category=10 and not category=11 and not category=9";
         $result = $this->mysqli->query($sql) or die("get points in month");  
         $points = 0;
         while($row = mysqli_fetch_array($result)) {
@@ -524,24 +524,19 @@ class Mysql {
         }
         
         // add chapter points
-        $sql = "select distinct date, max(points)points from events where category=9 and date <= '" . date('Y-m-d', time()) . "'";
+        $sql = "select distinct date from events where category=9 and date <= '" . date('Y-m-d', time()) . "'";
         $result = $this->mysqli->query($sql) or die("get points in category for user");  
-        while($row = mysqli_fetch_array($result)) {
-            $points += $row[1];
-        }
-        return $points;
-        
+        $points += $result->num_rows * CHAPTER_POINTS;
         return $points;
     }
     
     function getPointsInCategory($cat) {
         if($cat == 9) {
-            $sql = "select distinct date, max(points)points from events where category=$cat and date <= '" . date('Y-m-d', time()) . "'";
+            $sql = "select distinct date from events where category=$cat and date <= '" . date('Y-m-d', time()) . "'";
             $result = $this->mysqli->query($sql) or die("get points in category for user");  
             $points = 0;
-            while($row = mysqli_fetch_array($result)) {
-                $points += $row[1];
-            }
+            $num_chaps = $result->num_rows;
+            $points = CHAPTER_POINTS * $num_chaps;
             return $points;
         } else {
             $sql = "select points from events where category=$cat and date <= '" . date('Y-m-d', time()) . "'";
@@ -662,6 +657,12 @@ class Mysql {
         $sql = "select * from leadership inner join posList on leadership.`position`=posList.`id` where username='$un' and `order`=-1 order by start_date desc";
         $result = $this->mysqli->query($sql) or die("get chair position points");  
         return $result;     
+    }
+    
+    function chapterExemption($username, $eventId) {
+        $sql = "insert into points values($eventId, '$username', 1)";
+        $result = $this->mysqli->query($sql) or die("chapter attendance exemption");  
+        return $result->num_rows;  
     }
 }
 

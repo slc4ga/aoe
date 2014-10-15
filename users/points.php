@@ -111,17 +111,18 @@
                                             $chapter_date = date('n/j/Y', strtotime($chapter[0]));
                                             $chapter_date_formatted = date('Y-m-d', strtotime($chapter[0]));
                                             $chapter_result = $mysql->checkChapterPoints($_SESSION['user_id'], $chapter_date_formatted);
+                                            $points = mysqli_fetch_array($chapter_result)[0];
                                             echo "<div class='col-md-4 chapter";
                                                 //check attendance submittal
                                                 
-                                                if($chapter_date <= date('n/j/Y', time())) {
+                                                if($chapter_date_formatted <= time()) {
                                                     
                                                     // if red
                                                     if($chapter_result->num_rows == 0) {
                                                         echo " missed";   
                                                     }
                                                     // if yellow
-                                                    else if(mysqli_fetch_array($chapter_result)[0] == 2) {
+                                                    else if($points == 2) {
                                                         echo " late";    
                                                     }
                                                     // else green
@@ -129,8 +130,9 @@
                                                         echo " ontime";    
                                                     }
                                                     echo "'>";
-                                                        echo $chapter_date;
+                                                    echo $chapter_date;
                                                 } else {
+                                                    echo "'>";
                                                     echo $chapter_date;
                                                 }
                                             echo "</div>";
