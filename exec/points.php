@@ -9,7 +9,7 @@
 ?>
 
 <div id="points" class='col-md-11'>
-    <h2 style="color:#0088cc"> Manage Points </h2>
+    <h2 style="color:#0088cc"> Manage Events </h2>
     <div id="addsuccess"></div>
     <div id="exemptsuccess"></div>
     <hr>

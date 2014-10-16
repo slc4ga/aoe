@@ -516,7 +516,11 @@ class Mysql {
     }
     
     function getPointsInMonth() {
-        $sql = "select points from events where date > '" . date('Y-m-1', time()) . "' and date < '". date('Y-m-t', time()) . "' and not category=10 and not category=11 and not category=9";
+        return $this->getPointsInSpecifiedMonth(time());
+    }
+    
+    function getPointsInSpecifiedMonth($month) {
+        $sql = "select points from events where date > '" . date('Y-m-1', $month) . "' and date < '". date('Y-m-t', $month) . "' and not category=10 and not category=11 and not category=9";
         $result = $this->mysqli->query($sql) or die("get points in month");  
         $points = 0;
         while($row = mysqli_fetch_array($result)) {
@@ -524,10 +528,11 @@ class Mysql {
         }
         
         // add chapter points
-        $sql = "select distinct date from events where category=9 and date <= '" . date('Y-m-d', time()) . "'";
-        $result = $this->mysqli->query($sql) or die("get points in category for user");  
+        $sql = "select distinct date from events where category=9 and date > '" . date('Y-m-1', $month) . "' and date < '" 
+            . date('Y-m-t', $month) . "'";
+        $result = $this->mysqli->query($sql) or die("get chapter points in month");  
         $points += $result->num_rows * CHAPTER_POINTS;
-        return $points;
+        return $points;   
     }
     
     function getPointsInCategory($cat) {
@@ -550,7 +555,11 @@ class Mysql {
     }
     
     function getPointsInMonthForUser($un) {
-        $sql = "select points from events inner join points on events.id = points.eventId where date > '" . date('Y-m-1', time()) . "' and date < '". date('Y-m-t', time()) . "' and points.username = '" . $un . "' and approved=1 and not category=10 and not category=11";
+        return $this->getPointsInSpecifiedMonthForUser(time(), $un);
+    }
+    
+    function getPointsInSpecifiedMonthForUser($date, $un) {
+        $sql = "select points from events inner join points on events.id = points.eventId where date > '" . date('Y-m-1', $date) . "' and date < '". date('Y-m-t', $date) . "' and points.username = '" . $un . "' and approved=1 and not category=10 and not category=11";
         $result = $this->mysqli->query($sql) or die("get points in month for user");  
         $points = 0;
         while($row = mysqli_fetch_array($result)) {
@@ -558,8 +567,7 @@ class Mysql {
         }
         return $points;
     }
-        
-        
+    
     function getPointsInCategoryForUser($cat) {
         $un = $_SESSION['user_id'];
         if($cat == 10) {
@@ -663,6 +671,47 @@ class Mysql {
         $sql = "insert into points values($eventId, '$username', 1)";
         $result = $this->mysqli->query($sql) or die("chapter attendance exemption");  
         return $result->num_rows;  
+    }
+    
+    function getDateRange() {
+        $sql = "select min(date), max(date) from events";
+        $result = $this->mysqli->query($sql) or die("get date range");  
+        return $result;  
+    }
+    
+    function getSisterQuota($month) {
+        $sisters = $this->getAllActiveSisters();
+        $monthlyPoints = $this->getPointsInSpecifiedMonth($month);
+        $passingSisters;
+        while($sisterInfo = mysqli_fetch_array($sisters)) {
+            $sisterPoints = $this->getPointsInSpecifiedMonthForUser($month, $sisterInfo[0]);
+            if($sisterPoints > POINTS_QUOTA * $monthlyPoints) {
+                $passingSisters[] = $sisterInfo[0];
+            } 
+        }
+        return $passingSisters;
+    }
+    
+    function makeListDownload($filename, $month){            
+        $passingSisters = $this->getSisterQuota($month);
+        foreach ($passingSisters as $un) {
+            $datadump .= $un . "@virginia.edu, ";
+        }
+        $datadump = substr($datadump, 0, -2);
+        
+        header('Content-Description: File Transfer');
+        header("Content-Type: application/force-download");
+        header('Content-disposition: attachment; filename="' . $filename . '"');
+        header('Content-Length: '.strlen($datadump));
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header("Connection: close");
+        header('Expires: 0');
+        header('Pragma: public');
+        
+        echo $datadump;
+    
+        return true;
+
     }
 }
 

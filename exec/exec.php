@@ -59,7 +59,9 @@
      
                     <ul class="nav nav-pills nav-stacked">
                         <li id="pointsLi" class="active">
-                            <a href="javascript.void(0);" id="points">Manage Points</a></li>
+                            <a href="javascript.void(0);" id="points">Manage Events</a></li>
+                        <li id="summaryLi" >
+                            <a href="javascript.void(0);" id="summary">Points Summary</a></li>
                         <li id="sistersLi" >
                             <a href="javascript.void(0);" id="sistersedit">Manage Sisters</a></li>
                         <li id="leadershipLi" >
@@ -101,6 +103,14 @@
                                     }
                                 });
                                 document.getElementById("leadershipLi").className += " active";
+                            } else if(select.indexOf(4) != -1) {
+                                $.ajax({
+                                    url: 'pointsSummary.php',
+                                    success: function(data){
+                                        $('#content').html(data);   
+                                    }
+                                });
+                                document.getElementById("summaryLi").className += " active";
                             }
                         </script>
                     </div>
@@ -134,6 +144,18 @@
                     return false;
             }
             
+            function summary() {
+                var val = $("#month").val();
+                $.ajax({
+                    url: "getPointsSummary.php",
+                    data: { date: val },
+                    success: function(data){  
+                        $('#summaryInfo').html(data);
+                    }
+                });
+                return false; 
+            }
+            
             window.onload = function() {
                 
                 document.getElementById("points").onclick = function() {
@@ -145,6 +167,18 @@
                         }
                     });
                     document.getElementById("pointsLi").className += " active";
+                    return false;
+                }
+                
+                document.getElementById("summary").onclick = function() {
+                    $('.nav-pills li').removeClass('active');
+                    $.ajax({
+                        url: 'pointsSummary.php',
+                        success: function(data){
+                            $('#content').html(data);   
+                        }
+                    });
+                    document.getElementById("summaryLi").className += " active";
                     return false;
                 }
                 
