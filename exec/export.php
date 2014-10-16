@@ -7,6 +7,7 @@
     $mysql = new Mysql();
 
     $month = $_GET['month'];
+    $list =  $_GET['list'];
 
-    $mysql->makeListDownload('emails.txt', $month);
+    $mysql->makeListDownload('emails.txt', $month, $list);
 ?> 

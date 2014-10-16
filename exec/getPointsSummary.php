@@ -16,12 +16,25 @@
     $date = strtotime("$year-$month");
 
     echo "<h4>Total points in " . date('F', $date) . ": " . $mysql->getPointsInSpecifiedMonth($date) . "</h4>";
-    $passingSisters = $mysql->getSisterQuota($date);
+    $sisterList = $mysql->getSisterQuota($date);
+    $passingSisters = $sisterList[0];
+    $missingSisters = $sisterList[1];
     echo "<h4>Number of sisters who met " . round((float)POINTS_QUOTA * 100 ) . "% quota: " . count($passingSisters) . "</h4>";
 
-        echo "<div class='row'>";
+    foreach ($passingSisters as $un) {
+        $datadump .= $un . "@virginia.edu, ";
+        $passingTable .= "<tr class='success'>
+                <td>" . $mysql->getFullName($un) . "</td>
+                <td>" . $mysql->getPointsInSpecifiedMonthForUser($date, $un) . "</td>
+            </tr>";
+    }
+    $datadump = substr($datadump, 0, -2);
+
+
+    echo "<div class='row'>";
     echo "  <div class=\"col-md-4\">
                 <form action=\"export.php\" method=\"get\">
+                    <input type='hidden' value='$datadump' name='list' id='list'/>
                     <input type='hidden' value='$date' name='month' id='month'/>
                     <input type=\"submit\" class=\"btn btn-primary\" style='width: 100%' value=\"Download Email List\">
                 </form>
@@ -29,21 +42,19 @@
         </div><br>";
 ?>
 <table class="table table-hover">
+    <thead>
+        <td>Name</td>
+        <td>Points</td>
+    </thead>
     <?
-        foreach ($passingSisters as $un) {
-            echo "<tr class='success'>
-                    <td>" . $mysql->getFullName($un) . "</td>
-                    <td>" . $mysql->getPointsInSpecifiedMonthForUser($date, $un) . "</td>
-                </tr>";
-        }
-        $sisters = $mysql->getAllActiveSisters();
-        while($sisterInfo = mysqli_fetch_array($sisters)) {
-            if(!in_array($sisterInfo[0], $passingSisters)) {
-                echo "<tr>
-                    <td>" . $mysql->getFullName($sisterInfo[0]) . "</td>
-                    <td>" . $mysql->getPointsInSpecifiedMonthForUser($date, $sisterInfo[0]) . "</td>
-                </tr>";
-            }
+
+        echo $passingTable;
+
+        foreach ($missingSisters as $un) {
+            echo "<tr>
+                <td>" . $mysql->getFullName($un) . "</td>
+                <td>" . $mysql->getPointsInSpecifiedMonthForUser($date, $un) . "</td>
+            </tr>";
         }
     ?>
 </table>

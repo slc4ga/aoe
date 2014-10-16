@@ -687,17 +687,21 @@ class Mysql {
             $sisterPoints = $this->getPointsInSpecifiedMonthForUser($month, $sisterInfo[0]);
             if($sisterPoints > POINTS_QUOTA * $monthlyPoints) {
                 $passingSisters[] = $sisterInfo[0];
-            } 
+            } else {
+                $missingSisters[] = $sisterInfo[0];
+            }
         }
-        return $passingSisters;
+        $sisterList[] = $passingSisters;
+        $sisterList[] = $missingSisters;
+        return $sisterList;
     }
     
-    function makeListDownload($filename, $month){            
-        $passingSisters = $this->getSisterQuota($month);
-        foreach ($passingSisters as $un) {
-            $datadump .= $un . "@virginia.edu, ";
-        }
-        $datadump = substr($datadump, 0, -2);
+    function makeListDownload($filename, $month, $datadump){            
+//        $passingSisters = $this->getSisterQuota($month);
+//        foreach ($passingSisters as $un) {
+//            $datadump .= $un . "@virginia.edu, ";
+//        }
+//        $datadump = substr($datadump, 0, -2);
         
         header('Content-Description: File Transfer');
         header("Content-Type: application/force-download");
