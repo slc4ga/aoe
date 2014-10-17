@@ -742,9 +742,30 @@ class Mysql {
     
     function approveAttendance($eventId, $un) {
         $sql = "update points set approved=1 where eventId=$eventId and username='$un'";
-        echo $sql;
         $result = $this->mysqli->query($sql) or die("approve event attendance");  
         return $result; 
+    }
+    
+    function getTotalPointsOverall() {
+        $sql = "select points from events where not category=9";
+        $result = $this->mysqli->query($sql) or die("get total non chapter points");  
+        $points = 0;
+        while($event = mysqli_fetch_array($result)) {
+            $points += $event[0];
+        }
+        
+        // add chapter points
+        $sql = "select points from events where category=9 and points=" . CHAPTER_POINTS;
+        $result = $this->mysqli->query($sql) or die("get total chapter points");
+        $points += $result->num_rows * CHAPTER_POINTS;
+        
+        return $points;
+    }
+    
+    function getTotalPointsForUser() {
+        $sql = "select profiles.username, sum(points) from profiles left join points on profiles.username=points.username left join events on events.id=points.eventId where not profiles.pc like '%Alumnae%' group by profiles.username order by sum(points) desc, profiles.first_name asc";
+        $result = $this->mysqli->query($sql) or die("get total points for all users");  
+        return $result;
     }
 }
 

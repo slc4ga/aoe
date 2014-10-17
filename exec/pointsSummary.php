@@ -9,7 +9,7 @@
 ?>
 
 <div id="points" class='col-md-11'>
-    <h2 style="color:#0088cc"> Monthly Points Summary </h2>
+    <h2 style="color:#0088cc"> Points Summary </h2>
     <hr>
 <!--
     month/year drop down
@@ -22,6 +22,7 @@
     <div class="row">
         <div class="col-md-8">
             <select id="month" name="month" class="form-control">
+                <option value="total">Total</option>
                 <?
                     $dateRange = $mysql->getDateRange();
                     $dateArray = mysqli_fetch_array($dateRange);
