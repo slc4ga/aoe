@@ -5,7 +5,7 @@
     $mysql = new Mysql();
     date_default_timezone_set('America/New_York');
 
-    if(!isset($_SESSION['user_id']) || $mysql->getPos($_SESSION['user_id']) != 'W') {
+    if(!isset($_SESSION['user_id']) || $mysql->checkExec($_SESSION['user_id']) || $mysql->getPos($_SESSION['user_id']) != 'W') {
         header("location:../index.php");
     }
 
@@ -18,11 +18,15 @@
 
     $add = $_GET['add'];
     $exempt = $_GET['exempt'];
+    $approve = $_GET['approve'];
     echo "<script>
             var add = '$add';
             </script>";
     echo "<script>
             var exempt = '$exempt';
+            </script>";
+echo "<script>
+            var approve = '$approve';
             </script>";
 
 ?>
@@ -62,6 +66,8 @@
                             <a href="javascript.void(0);" id="points">Manage Events</a></li>
                         <li id="summaryLi" >
                             <a href="javascript.void(0);" id="summary">Points Summary</a></li>
+                        <li id="attendanceLi" >
+                            <a href="javascript.void(0);" id="attendance">Approve Attendance</a></li>
                         <li id="sistersLi" >
                             <a href="javascript.void(0);" id="sistersedit">Manage Sisters</a></li>
                         <li id="leadershipLi" >
@@ -111,6 +117,14 @@
                                     }
                                 });
                                 document.getElementById("summaryLi").className += " active";
+                            } else if(select.indexOf(5) != -1) {
+                                $.ajax({
+                                    url: 'attendanceList.php',
+                                    success: function(data){
+                                        $('#content').html(data);   
+                                    }
+                                });
+                                document.getElementById("attendanceLi").className += " active";
                             }
                         </script>
                     </div>
@@ -156,6 +170,18 @@
                 return false; 
             }
             
+            function semesterEvents() {
+                var val = $("#semester").val();
+                $.ajax({
+                    url: "getSemesterEvents.php",
+                    data: { date: val },
+                    success: function(data){  
+                        $('#semesterEvents').html(data);
+                    }
+                });
+                return false; 
+            }
+            
             window.onload = function() {
                 
                 document.getElementById("points").onclick = function() {
@@ -179,6 +205,18 @@
                         }
                     });
                     document.getElementById("summaryLi").className += " active";
+                    return false;
+                }
+                
+                document.getElementById("attendance").onclick = function() {
+                    $('.nav-pills li').removeClass('active');
+                    $.ajax({
+                        url: 'attendanceList.php',
+                        success: function(data){
+                            $('#content').html(data);   
+                        }
+                    });
+                    document.getElementById("attendanceLi").className += " active";
                     return false;
                 }
                 

@@ -30,21 +30,23 @@
     }
     $datadump = substr($datadump, 0, -2);
 
-
-    echo "<div class='row'>";
-    echo "  <div class=\"col-md-4\">
-                <form action=\"export.php\" method=\"get\">
-                    <input type='hidden' value='$datadump' name='list' id='list'/>
-                    <input type='hidden' value='$date' name='month' id='month'/>
-                    <input type=\"submit\" class=\"btn btn-primary\" style='width: 100%' value=\"Download Email List\">
-                </form>
-            </div>
-        </div><br>";
+    if (count($passingSisters) > 0) {
+        echo "<div class='row'>";
+        echo "  <div class=\"col-md-4\">
+                    <form action=\"export.php\" method=\"get\">
+                        <input type='hidden' value='$datadump' name='list' id='list'/>
+                        <input type='hidden' value='$date' name='month' id='month'/>
+                        <input type=\"submit\" class=\"btn btn-primary\" style='width: 100%' value=\"Download Email List\">
+                    </form>
+                </div>
+            </div>";
+    }
+    echo "<br>";
 ?>
 <table class="table table-hover">
     <thead>
-        <td>Name</td>
-        <td>Points</td>
+        <th>Name</th>
+        <th>Points</th>
     </thead>
     <?
 

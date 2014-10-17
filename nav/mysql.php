@@ -643,6 +643,12 @@ class Mysql {
         return $result->num_rows;    
     }
     
+    function checkAttendanceApproval($un, $eventId) {
+        $sql = "select * from points where username = '$un' and eventId = $eventId and approved=1";
+        $result = $this->mysqli->query($sql) or die("check attendance approval");  
+        return $result->num_rows;    
+    }
+    
     function checkChapterAttendance($un, $date) {
         $sql = "select * from points inner join events on points.eventId=events.id where username = '$un' and date = '$date'";
         $result = $this->mysqli->query($sql) or die("check chapter attendance");  
@@ -679,6 +685,12 @@ class Mysql {
         return $result;  
     }
     
+    function getSemesterStart() {
+        $sql = "select min(date) from events";
+        $result = $this->mysqli->query($sql) or die("get semester start");  
+        return $result;  
+    }
+    
     function getSisterQuota($month) {
         $sisters = $this->getAllActiveSisters();
         $monthlyPoints = $this->getPointsInSpecifiedMonth($month);
@@ -697,11 +709,6 @@ class Mysql {
     }
     
     function makeListDownload($filename, $month, $datadump){            
-//        $passingSisters = $this->getSisterQuota($month);
-//        foreach ($passingSisters as $un) {
-//            $datadump .= $un . "@virginia.edu, ";
-//        }
-//        $datadump = substr($datadump, 0, -2);
         
         header('Content-Description: File Transfer');
         header("Content-Type: application/force-download");
@@ -716,6 +723,28 @@ class Mysql {
     
         return true;
 
+    }
+    
+    function getSemesterEvents($date) {
+        // date = year-1 or year-8
+        $end = strtotime("+4 month", $date);
+        $sql = "select * from events where date > '" . date('Y-m-1', $date) . "' and date < '" . date('Y-m-t', $end) 
+            . "' and not category=9";
+        $result = $this->mysqli->query($sql) or die("get semester events");  
+        return $result; 
+    }
+    
+    function getEventAttendance($eventId) {
+        $sql = "select * from points where eventId=$eventId and approved=0";
+        $result = $this->mysqli->query($sql) or die("get submitted event attendance");  
+        return $result; 
+    }
+    
+    function approveAttendance($eventId, $un) {
+        $sql = "update points set approved=1 where eventId=$eventId and username='$un'";
+        echo $sql;
+        $result = $this->mysqli->query($sql) or die("approve event attendance");  
+        return $result; 
     }
 }
 
