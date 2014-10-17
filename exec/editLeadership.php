@@ -34,6 +34,10 @@
         </p>
         <br>
         <hr>
+        <?
+            include 'addPositionForm.php';
+        ?>
+        <hr>
 		<h3>Exec Board</h3>
 		<table class='table' id="execListTable">
 			<?php
