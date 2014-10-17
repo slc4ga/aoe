@@ -72,7 +72,16 @@
                 while ($sister = mysqli_fetch_array($sisterPointsList)) {
                     echo "<tr>
                         <td>" . $mysql->getFullName($sister[0]) . "</td>
-                        <td>" . $sister[1] . "</td>
+                        <td>";
+                        $chairPoints = $mysql->getPointsInCategoryForUser(10);
+                        $committeePoints = $mysql->getPointsInCategoryForUser(11);
+                        if($sister[1] === null) { 
+                            echo "0"; 
+                        } else { 
+                            $pointTotal = $sister[1] + $chairPoints + $committeePoints;
+                            echo $pointTotal; 
+                        }
+                    echo "</td>
                     </tr>";
                 }
         echo "</table>";

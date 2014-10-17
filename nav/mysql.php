@@ -763,7 +763,7 @@ class Mysql {
     }
     
     function getTotalPointsForUser() {
-        $sql = "select profiles.username, sum(points) from profiles left join points on profiles.username=points.username left join events on events.id=points.eventId where not profiles.pc like '%Alumnae%' group by profiles.username order by sum(points) desc, profiles.first_name asc";
+        $sql = "select profiles.username, sum(points) from profiles left join points on profiles.username=points.username left join events on events.id=points.eventId where not profiles.pc like '%Alumnae%' group by profiles.username order by profiles.first_name asc";
         $result = $this->mysqli->query($sql) or die("get total points for all users");  
         return $result;
     }

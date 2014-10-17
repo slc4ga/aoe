@@ -10,6 +10,10 @@
 
 <div id="points" class='col-md-11'>
     <h2 style="color:#0088cc"> Points Summary </h2>
+    <div class="alert alert-warning" role="alert">
+        <strong>Warning!</strong> Right now, each new summary takes about 20 seconds to load. 
+        The webmaster is working on speeding it up, but be patient for now!
+    </div>
     <hr>
 <!--
     month/year drop down
@@ -40,7 +44,7 @@
             </select>
         </div>
         <div class="col-md-4">
-            <button class="btn btn-primary" id="sumSubmit" name="sumSubmit" onclick="summary()">Get Monthly Summary</button>
+            <button class="btn btn-primary" id="sumSubmit" name="sumSubmit" onclick="summary()">Get Summary</button>
         </div>
     </div>
     <hr>
