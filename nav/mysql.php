@@ -352,16 +352,43 @@ class Mysql {
     
     function addLeader($pos, $name) {
         $array = explode(" ", $name);
-        echo $array[0] . " " . $array[1];
         $sql = "select username from profiles where first_name='$array[0]' and last_name='$array[1]'";
-        echo $sql;
         $result = $this->mysqli->query($sql) or die("get username");  
         $row = $result->fetch_array(MYSQLI_NUM);
 
         $sql = "insert into leadership values('$row[0]', '$pos', '" . date('Y-m-d', time()) . "',1)";
-        echo $sql;
         $result = $this->mysqli->query($sql) or die("insert pos"); 
         
+    }
+    
+    function getPositionId() {
+        $alphabet = "ABCDEFGHIJKLMNOPQRSTUWXYZ0123456789";
+        $id = array(); //remember to declare $pass as an array
+        $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
+        for ($i = 0; $i < 2; $i++) {
+            $n = rand(0, $alphaLength);
+            $id[] = $alphabet[$n];
+        }
+        return implode($id); //turn the array into a string      
+    }
+    
+    function checkUniqueId($id) {
+        $sql = "select * from posList where id='$id'";
+        $result = $this->mysqli->query($sql) or die("check unique id"); 
+        return $result->num_rows;  
+    }
+    
+    function addLeaderPosition($name, $order) {
+        $id = $this->getPositionId();
+        //echo "ID: " . $id . "<br>";
+        while($this->checkUniqueId($id) == 1) {
+            $id = $this->getPositionId();
+//            echo "ID: " . $id . "<br>";
+        }
+        
+        $sql = "insert into posList values('$id', '$name', $order)";
+        $result = $this->mysqli->query($sql) or die("insert leadership pos"); 
+        return $result;        
     }
     
     function deleteLeader($pos, $name) {

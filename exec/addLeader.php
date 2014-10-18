@@ -4,15 +4,12 @@
 
     $mysql = new Mysql();
 
-    if(!isset($_SESSION['user_id']) || $mysql->getPos($_SESSION['user_id']) != 'W') {
+    if(!isset($_SESSION['user_id']) || $mysql->checkExec($_SESSION['user_id']) || $mysql->getPos($_SESSION['user_id']) != 'W') {
         header("location:../index.php");
     }
 
     $pos = $_GET['pos'];
     $name = $_GET['sister'];
-    
-    echo $pos;
-    echo $name;
     
     $mysql->addLeader($pos, $name);
 

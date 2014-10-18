@@ -6,7 +6,7 @@
     $exec = $mysql->getExec();
     $chairs = $mysql->getPositions();
 
-    if(!isset($_SESSION['user_id']) || $mysql->getPos($_SESSION['user_id']) != 'W') {
+    if(!isset($_SESSION['user_id']) || $mysql->checkExec($_SESSION['user_id']) || $mysql->getPos($_SESSION['user_id']) != 'W') {
         header("location:../index.php");
     }
 
@@ -34,6 +34,7 @@
         </p>
         <br>
         <hr>
+        <div id="posResult"></div>
         <?
             include 'addPositionForm.php';
         ?>
@@ -107,6 +108,12 @@
 	</div>
 </div>
 <script type="text/javascript">  
+    if(pos === 'added') {
+        $('#posResult').html(
+          "<div class=\"alert alert-success alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span> </button> <strong>Nice!</strong> Your leadership position was added.</div>"  
+        );
+    }
+    
     function addLeader(position) {
         var id1 = "searchid" + position;
         var id2 = "sisters" + position;

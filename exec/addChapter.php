@@ -1,19 +1,15 @@
-<h4>On add chapter</h4>
 <?
 
-echo "start";
     require_once('../nav/mysql.php');
-echo "here";
     require_once('../nav/constants.php');
     session_start();
 
     $mysql = new Mysql();
 
-    if(!isset($_SESSION['user_id']) || $mysql->getPos($_SESSION['user_id']) != 'W') {
+        if(!isset($_SESSION['user_id']) || $mysql->checkExec($_SESSION['user_id']) || $mysql->getPos($_SESSION['user_id']) != 'W') {
         header("location:../index.php");
     }
 
-echo "here";
 
     $date = $_GET['date'];
     $name = "Chapter";
@@ -21,14 +17,9 @@ echo "here";
     $points = CHAPTER_POINTS;
     $category = 9;
 
-echo "here";
-
     $mysql->addEvent($name, $date, $points, $category);
-    echo "1";
     $mysql->addEvent($late, $date, $points/2, $category);
-echo "2";
     $mysql->setChapterPass($mysql->generateChapterPassword());
-echo "3";
     
     echo '<div class="panel-body">';
         include 'chapterForm.php';

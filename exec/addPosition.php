@@ -8,10 +8,11 @@
         header("location:../index.php");
     }
 
-    $date = $_POST['date'];
-    $sister = $_POST['sister'];
+    $name = $_GET['name'];
+    $order = $_GET['order'];
     
-    $mysql->chapterExemption($sister, $date);
-    header("location: exec.php?exempt=success");
+    $mysql->addLeaderPosition($name, $order);
+
+    header("location: exec.php?select=3&pos=added");
 
 ?>

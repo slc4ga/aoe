@@ -5,7 +5,7 @@
     $mysql = new Mysql();
     session_start();
 
-    if(!isset($_SESSION['user_id']) || $mysql->getPos($_SESSION['user_id']) != 'W') {
+    if(!isset($_SESSION['user_id']) || $mysql->checkExec($_SESSION['user_id']) || $mysql->getPos($_SESSION['user_id']) != 'W') {
         header("location:../index.php");
     }
 

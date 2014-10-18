@@ -19,14 +19,18 @@
     $add = $_GET['add'];
     $exempt = $_GET['exempt'];
     $approve = $_GET['approve'];
+    $pos = $_GET['pos'];
     echo "<script>
             var add = '$add';
             </script>";
     echo "<script>
             var exempt = '$exempt';
             </script>";
-echo "<script>
+    echo "<script>
             var approve = '$approve';
+            </script>";
+    echo "<script>
+            var pos = '$pos';
             </script>";
 
 ?>
