@@ -258,13 +258,9 @@ class Mysql {
     }
     
     function checkExec($un) {
-        $sql = "select `order` from leadership inner join posList on leadership.position=posList.ID where username='$un'";
-        $result = $this->mysqli->query($sql) or die("check webmaster");  
-        $row = $result->fetch_array(MYSQLI_NUM);
-        if($row[0] == 1) {
-            return true;
-        }
-        return false;
+        $sql = "select * from leadership inner join posList on leadership.position=posList.ID where username='$un' and `order`>0";
+        $result = $this->mysqli->query($sql) or die("check exec");  
+        return $result->num_rows;
     }
     
     function addTestimonial($message) {

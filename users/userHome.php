@@ -81,7 +81,7 @@
                                     <a href='../webmaster/webmaster.php' id='webmaster'>Webmaster Capabilities</a></li>";
                             }
 
-                            if($mysql->checkExec($_SESSION['user_id']) || $mysql->checkWebmaster($_SESSION['user_id'])) {
+                            if($mysql->checkExec($_SESSION['user_id']) == 1 || $mysql->checkWebmaster($_SESSION['user_id'])) {
                                 echo "<li>
                                     <a href='../exec/exec.php' id='exec'>Exec Capabilities</a></li>";
                             }
