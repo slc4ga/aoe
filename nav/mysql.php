@@ -795,6 +795,12 @@ class Mysql {
         return $result; 
     }
     
+    function approveBabyEvent($eventId, $points) {
+        $sql = "update events set approved=1, points=$points where id=$eventId";
+        $result = $this->mysqli->query($sql) or die("approve baby attendance");  
+        return $result; 
+    }
+    
     function getTotalPointsOverall() {
         $sql = "select points from events where not category=9";
         $result = $this->mysqli->query($sql) or die("get total non chapter points");  

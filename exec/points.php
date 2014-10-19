@@ -2,6 +2,7 @@
 	include_once('../nav/mysql.php');
 	session_start();
 	$mysql = new Mysql();
+   date_default_timezone_set('America/New_York');
 
     if(!isset($_SESSION['user_id']) || $mysql->checkExec($_SESSION['user_id']) || $mysql->getPos($_SESSION['user_id']) != 'W') {
         header("location: ../index.php");
@@ -96,6 +97,33 @@
                                                             <button onclick='deleteEvent($individualEvent[0], $row[0])' 
                                                                 class='btn btn-danger'>
                                                                     Delete Event
+                                                            </button>
+                                                        </td>
+                                                      </tr>";
+                                            }
+                                        echo "  </tbody>
+                                              </table>";
+                                    }
+                                    
+                                    $events = $mysql->getUnapprovedEventsInCategory($row[0]);
+                                    if($events->num_rows > 0) {
+                                        echo "<hr><p>The following events have been entered, but have not been approved yet: </p
+                                                ><br>";
+                                        echo "<table class='table table-hover'>
+                                                <tbody>";
+                                            while($individualEvent = mysqli_fetch_array($events)) {  
+                                                $approved = $mysql->checkAttendanceApproval($_SESSION['user_id'], $individualEvent[0]);
+                                                echo "<tr";
+                                                if($approved == 1) {
+                                                    echo " class=\"success\"";
+                                                }
+                                                echo      ">
+                                                        <td><em>$individualEvent[1]</em></td>
+                                                        <td><em>" . date('n/j/Y', strtotime($individualEvent[3])) . "</em></td>
+                                                        <td style='text-align: center'>
+                                                            <button onclick='approveEvent($individualEvent[0], $row[0])' 
+                                                                class='btn btn-info'>
+                                                                    Approve Event
                                                             </button>
                                                         </td>
                                                       </tr>";

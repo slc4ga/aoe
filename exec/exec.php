@@ -150,6 +150,24 @@
                     return false;
             }
             
+            function approveEvent(id, divId) {
+                 bootbox.prompt("How many points does this event get?", function(result) {                
+                    if (result === null) {                                             
+                        // do nothing                             
+                    } else {
+                        $.ajax({
+                            url: "approveBabyEvent.php",
+                            data: { id: id,
+                                    points: result, 
+                                    divId: divId },
+                            success: function(data){  
+                                $('#' + divId).html(data);
+                            }
+                        });                    
+                    }
+                });
+            }
+            
             function addChapter() {
                 var date = $("#chapterDate").val();
                 $.ajax({
