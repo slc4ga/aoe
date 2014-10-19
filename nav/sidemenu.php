@@ -3,7 +3,6 @@
 ?> 
 
 <div class="col-md-3">
-     
      <ul class="nav nav-pills nav-stacked">
         <li class="dropdown-header">Who are we?</li>
         <li <? if ($pageName == "/index.php") { echo "class=\"active\""; } ?> >
@@ -20,5 +19,4 @@
         <li ><a href="http://www.virginia.edu/">UVa Home </a></li>
         <li ><a href="http://seas.virginia.edu/">UVa Engineering</a></li>
     </ul>
-     
  </div>
