@@ -482,20 +482,32 @@ class Mysql {
     }
     
     function getPointsCategories() {
-        $sql = "select * from pointsCategories order by num asc"; 
+        $sql = "select * from pointsCategories order by  category asc, `order` desc"; 
         $result = $this->mysqli->query($sql) or die("get categories");  
         return $result;
     }
     
     function addEvent($name, $date, $points, $category) {
-        $sql = "insert into events values(null, '$name', $category, '$date', $points)"; 
+        $sql = "insert into events values(null, '$name', $category, '$date', $points, 1)"; 
         $result = $this->mysqli->query($sql) or die("add event");  
         return $result;
     }
     
+    function addBabyEvent($name, $date, $category) {
+        $sql = "insert into events values(null, '$name', $category, '$date', null, 0)"; 
+        $result = $this->mysqli->query($sql) or die("add baby event");  
+        return $result;
+    }
+    
     function getEventsInCategory($category) {
-        $sql = "select * from events where category=$category"; 
+        $sql = "select * from events where category=$category and approved=1"; 
         $result = $this->mysqli->query($sql) or die("get events in category");  
+        return $result;
+    }
+    
+    function getUnapprovedEventsInCategory($category) {
+        $sql = "select * from events where category=$category and approved=0"; 
+        $result = $this->mysqli->query($sql) or die("get unapproved events in category");  
         return $result;
     }
     
@@ -505,8 +517,8 @@ class Mysql {
         return $result;
     }
     
-    function addEventCategory($category) {
-        $sql = "insert into pointsCategories values(null, '$category')"; 
+    function addEventCategory($category, $order) {
+        $sql = "insert into pointsCategories values(null, '$category', $order)"; 
         $result = $this->mysqli->query($sql) or die("add category");  
         return $result;
     }
@@ -547,7 +559,7 @@ class Mysql {
     }
     
     function getPointsInSpecifiedMonth($month) {
-        $sql = "select points from events where date > '" . date('Y-m-1', $month) . "' and date < '". date('Y-m-t', $month) . "' and not category=10 and not category=11 and not category=9";
+        $sql = "select points from events join pointsCategories on events.category=pointsCategories.num where date > '" . date('Y-m-1', $month) . "' and date < '". date('Y-m-t', $month) . "' and not events.category=10 and not events.category=11 and not events.category=9 and `order`=0";
         $result = $this->mysqli->query($sql) or die("get points in month");  
         $points = 0;
         while($row = mysqli_fetch_array($result)) {
@@ -562,7 +574,17 @@ class Mysql {
         return $points;   
     }
     
+    function checkCategoryIsMandatory($cat) {
+        $sql = "select * from pointsCategories where num=$cat and `order`=0";
+        $result = $this->mysqli->query($sql) or die("check category order"); 
+        return $result->num_rows;
+    }
+    
     function getPointsInCategory($cat) {
+        if($this->checkCategoryIsMandatory($cat) == 0) {
+            return 0;
+        }
+        
         if($cat == 9) {
             $sql = "select distinct date from events where category=$cat and date <= '" . date('Y-m-d', time()) . "'";
             $result = $this->mysqli->query($sql) or die("get points in category for user");  
@@ -586,7 +608,7 @@ class Mysql {
     }
     
     function getPointsInSpecifiedMonthForUser($date, $un) {
-        $sql = "select points from events inner join points on events.id = points.eventId where date > '" . date('Y-m-1', $date) . "' and date < '". date('Y-m-t', $date) . "' and points.username = '" . $un . "' and approved=1 and not category=10 and not category=11";
+        $sql = "select points from events inner join points on events.id = points.eventId where date > '" . date('Y-m-1', $date) . "' and date < '". date('Y-m-t', $date) . "' and points.username = '" . $un . "' and points.approved=1 and not category=10 and not category=11";
         $result = $this->mysqli->query($sql) or die("get points in month for user");  
         $points = 0;
         while($row = mysqli_fetch_array($result)) {
@@ -608,7 +630,7 @@ class Mysql {
         } 
         
         if($cat == 9) {
-            $sql = "select distinct date, points from events inner join points on events.id = points.eventId where category=$cat and date <= '" . date('Y-m-d', time()) . "' and points.username = '$un' and approved=1";
+            $sql = "select distinct date, points from events inner join points on events.id = points.eventId where category=$cat and date <= '" . date('Y-m-d', time()) . "' and points.username = '$un' and points.approved=1";
             $result = $this->mysqli->query($sql) or die("get points in category for user");  
             $points = 0;
             while($row = mysqli_fetch_array($result)) {
@@ -616,7 +638,7 @@ class Mysql {
             }
             return $points;
         } else {
-            $sql = "select points from events inner join points on events.id = points.eventId where category=$cat and date <= '" . date('Y-m-d', time()) . "' and points.username = '$un' and approved=1";
+            $sql = "select points from events inner join points on events.id = points.eventId where category=$cat and date <= '" . date('Y-m-d', time()) . "' and points.username = '$un' and points.approved=1";
             $result = $this->mysqli->query($sql) or die("get points in category for user");  
             $points = 0;
             while($row = mysqli_fetch_array($result)) {
@@ -793,6 +815,35 @@ class Mysql {
         $sql = "select profiles.username, sum(points) from profiles left join points on profiles.username=points.username left join events on events.id=points.eventId where not profiles.pc like '%Alumnae%' group by profiles.username order by profiles.first_name asc";
         $result = $this->mysqli->query($sql) or die("get total points for all users");  
         return $result;
+    }
+    
+    function addBabyEventForm($cat) {
+        $sql = "select category from pointsCategories where num=$cat";
+        $result = $this->mysqli->query($sql) or die("add baby event form");  
+        $name = mysqli_fetch_array($result)[0];
+        
+        echo '
+        <div class="row"><div class="col-md-8 col-md-offset-2">
+        <form action="addBabyEvent.php" method="post" accept-charset="UTF-8">
+            <div class="row">
+                <div class="col-md-6">
+                    <input id="cat" type="hidden" name="cat" value="' . $cat . '"/>
+                    <input class="form-control" id="name" style="margin-bottom: 15px;" type="text" name="name"  
+                        size="50" placeholder="Event Name"/>
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control" id="date" style="margin-bottom: 15px;" type="date" name="date"  
+                        size="50" placeholder="Event date"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <input class="btn btn-primary" style="width: 100%;" 
+                           type="submit" value="Submit Event for Approval" />
+                </div>
+            </div>
+            <br>
+        </form></div></div>';
     }
 }
 

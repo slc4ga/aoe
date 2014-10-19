@@ -8,8 +8,9 @@
         header("location:../index.php");
     }
     $category = $_POST['name'];
+    $order = $_POST['order'];
     
-    $mysql->addEventCategory($category);
+    $mysql->addEventCategory($category, $order);
     header("location: exec.php");
 
 ?>

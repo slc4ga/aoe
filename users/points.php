@@ -3,6 +3,7 @@
     include_once('../nav/constants.php');
 	session_start();
 	$mysql = new Mysql();
+    date_default_timezone_set('America/New_York');
 
     if(!isset($_SESSION['user_id'])) {
         header("location: ../index.php");
@@ -32,6 +33,7 @@
             echo '</div>';
         }
     ?>
+    <div id="addsuccess"></div>
     <hr>
     <div class="panel-group" id="accordion">
         <? 
@@ -50,6 +52,14 @@
                         </div>
                         <div id="' . $row[0] . '" class="panel-collapse collapse">
                             <div class="panel-body">';
+                                // baby event form
+                                $isMandatory = $mysql->checkCategoryIsMandatory($row[0]);
+                                if($isMandatory == 0) {
+                                   echo "<p style='text-align: center'><em>
+                                        Remember - these points aren't counted towards your monthly totals!
+                                        </em></p>"; 
+                                    $mysql->addBabyEventForm($row[0]);
+                                } 
                                 // chapter
                                 if($row[0] == 9) {
                                     echo "<div id='chapterLoginMessage'></div>
@@ -192,6 +202,27 @@
                                         echo "  </tbody>
                                               </table>";
                                     }
+                                    
+                                    $events = $mysql->getUnapprovedEventsInCategory($row[0]);
+                                    if($events->num_rows > 0) {
+                                        echo "<hr><p>The following events have been entered, but have not been approved by exec yet: </p
+                                                ><br>";
+                                        echo "<table class='table table-hover'>
+                                                <tbody>";
+                                            while($individualEvent = mysqli_fetch_array($events)) {  
+                                                $approved = $mysql->checkAttendanceApproval($_SESSION['user_id'], $individualEvent[0]);
+                                                echo "<tr";
+                                                if($approved == 1) {
+                                                    echo " class=\"success\"";
+                                                }
+                                                echo      ">
+                                                        <td><em>$individualEvent[1]</em></td>
+                                                        <td><em>" . date('n/j/Y', strtotime($individualEvent[3])) . "</em></td>
+                                                      </tr>";
+                                            }
+                                        echo "  </tbody>
+                                              </table>";
+                                    }
                                 }
                 echo '      </div>
                         </div>
@@ -200,3 +231,10 @@
         ?>
     </div>
 </div>
+<script type="text/javascript">
+    if(add === 'success') {
+        $('#addsuccess').html(
+          "<div class=\"alert alert-success alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span> </button> <strong>Nice!</strong> Your event was added, and will appear once it has been approved by exec.</div>"  
+        );
+    }
+</script>

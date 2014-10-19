@@ -7,6 +7,7 @@
     }
 
     $mysql = new Mysql();
+    date_default_timezone_set('America/New_York');
 
     if($_POST) {
         if($_POST['testimonialbtn']) {
@@ -18,6 +19,11 @@
             }
         }
     }
+
+    $add = $_GET['event'];
+    echo "<script>
+            var add = '$add';
+            </script>";
 
 ?>
 
