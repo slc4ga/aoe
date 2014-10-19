@@ -851,6 +851,15 @@ class Mysql {
             <br>
         </form></div></div>';
     }
+    
+    function checkSemesterBonus($date) {
+        
+    }
+    
+    function calculateSemesterBonus($date) {
+        echo $date;
+        
+    }
 }
 
 ?>

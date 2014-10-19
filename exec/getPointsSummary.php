@@ -8,13 +8,20 @@
     if(!isset($_SESSION['user_id']) || $mysql->checkExec($_SESSION['user_id']) || $mysql->getPos($_SESSION['user_id']) != 'W') {
         header("location: ../index.php");
     }
+
     $date = $_GET['date'];
+    $calc = $_GET['calc'];
+
     if($date != "total") {
         $date = explode("/", $_GET['date']);
         $month = $date[0];
         $year = $date[1];
 
         $date = strtotime("$year-$month");
+
+        if($calc == "true") {
+            $mysql->calculateSemesterBonus($date); 
+        }
 
         echo "<h4>Total points in " . date('F', $date) . ": " . $mysql->getPointsInSpecifiedMonth($date) . "</h4>";
         $sisterList = $mysql->getSisterQuota($date);
@@ -30,10 +37,18 @@
                 </tr>";
         }
         $datadump = substr($datadump, 0, -2);
-
+        
+        echo "<div class='row'>";
+        echo "  <div class=\"col-md-6\">";
+            if ($mysql->checkSemesterBonus($date) == 0) {
+                echo "<button class=\"btn btn-primary\" style='width: 100%; margin-bottom: 5px;' onclick=\"semesterBonus('" 
+                    . date('n/Y', $date) . "')\">
+                        Calculate Semester Bonus</button>";
+            }
+        echo " </div></div>";
         if (count($passingSisters) > 0) {
             echo "<div class='row'>";
-            echo "  <div class=\"col-md-4\">
+            echo "  <div class=\"col-md-6\">
                         <form action=\"export.php\" method=\"get\">
                             <input type='hidden' value='$datadump' name='list' id='list'/>
                             <input type='hidden' value='$date' name='month' id='month'/>
@@ -42,6 +57,7 @@
                     </div>
                 </div>";
         }
+        echo "</div>";
         echo "<br>";
 
         echo "<table class=\"table table-hover\">

@@ -184,7 +184,8 @@
                 var val = $("#month").val();
                 $.ajax({
                     url: "getPointsSummary.php",
-                    data: { date: val },
+                    data: { date: val,
+                            calc: false },
                     success: function(data){  
                         $('#summaryInfo').html(data);
                     }
@@ -202,6 +203,19 @@
                     }
                 });
                 return false; 
+            }
+            
+            function semesterBonus(date) {
+                alert(date);
+                $.ajax({
+                    url: "getPointsSummary.php",
+                    data: { date: date,
+                            calc: true },
+                    success: function(data){  
+                        $('#summaryInfo').html(data);
+                    }
+                });
+                return false;  
             }
             
             window.onload = function() {
