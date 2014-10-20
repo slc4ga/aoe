@@ -15,7 +15,7 @@
     <?
         $userPoints = $mysql->getPointsInMonthForUser($_SESSION['user_id']);
         $monthPoints = $mysql->getPointsInMonth();
-        echo "<h4 id='monthly-points'>" . date('F', time()) . " points: " . $userPoints . "/" . $monthPoints . "</h4>";
+        echo "<h4 id='monthly-points'>" . date('F', time()) . " points <em>so far</em>: " . $userPoints . "/" . $monthPoints . "</h4>";
 
         $daysLeft = date('t', time()) - date('d', time());
         if($daysLeft < 10) {
@@ -68,7 +68,7 @@
                                         $today = date('Y-m-d', time());
                                         $today_formatted = date('n/j/Y', time());
                                         
-                                        if(time() < strtotime("7:50 PM") && time() < strtotime("8:05 PM")) { //on time
+                                        if(time() > strtotime("7:50 PM") && time() < strtotime("8:15 PM")) { //on time
                                             if($mysql->checkChapterAttendance($_SESSION['user_id'], date('Y-m-d', time())) == 0) {
                                                 echo "<div class='row'>
                                                     <div class='col-md-4 col-md-offset-4'>";
@@ -84,7 +84,7 @@
                                                         </div>
                                                     </div>";    
                                             }
-                                        } else if(time() < strtotime("8:15 PM")) { // late
+                                        } else if(time() < strtotime("8:20 PM")) { // late
                                                 if($mysql->checkChapterAttendance($_SESSION['user_id'], date('Y-m-d', time())) == 0) {
                                                     echo "<div class='row'>
                                                             <div class='col-md-4 col-md-offset-4'>";
@@ -101,14 +101,16 @@
                                                         </div>";    
                                                 }
                                         } else if(time() < strtotime("9:15 PM")) { // too late
-                                            echo "<div class='row'>
-                                                <div class='col-md-12'>";
-                                            echo "<div class='alert alert-danger' role='alert'>
-                                                    <strong>Oh snap!</strong> You were too late to chapter to check in. 
-                                                    Try to be on time next time!
-                                                </div>";
-                                            echo "</div>
-                                                </div>";
+                                            if($mysql->checkChapterAttendance($_SESSION['user_id'], date('Y-m-d', time())) == 0) {
+                                                echo "<div class='row'>
+                                                    <div class='col-md-12'>";
+                                                echo "<div class='alert alert-danger' role='alert'>
+                                                        <strong>Oh snap!</strong> You were too late to chapter to check in. 
+                                                        Try to be on time next time!
+                                                    </div>";
+                                                echo "</div>
+                                                    </div>";
+                                            }
                                         }
                                     }
                                     echo "</div>";
@@ -121,15 +123,17 @@
                                             $chapter_date = date('n/j/Y', strtotime($chapter[0]));
                                             $chapter_date_formatted = date('Y-m-d', strtotime($chapter[0]));
                                             $chapter_result = $mysql->checkChapterPoints($_SESSION['user_id'], $chapter_date_formatted);
-                                            $points = mysqli_fetch_array($chapter_result)[0];
+                                            $pointsArray = mysqli_fetch_array($chapter_result);
+                                            $points = $pointsArray[0];
                                             echo "<div class='col-md-4 chapter";
                                                 //check attendance submittal
                                                 
-                                                if($chapter_date_formatted <= time()) {
-                                                    
+                                                if($chapter_date_formatted <= date('Y-m-d', time())) {                                                        
                                                     // if red
                                                     if($chapter_result->num_rows == 0) {
-                                                        echo " missed";   
+                                                        if(date('G:i' , time()) > date('G:i', strtotime("9:00 PM"))){
+                                                            echo " missed";   
+                                                        }
                                                     }
                                                     // if yellow
                                                     else if($points == 2) {

@@ -3,8 +3,9 @@
     session_start();
 
     $mysql = new Mysql();
+    date_default_timezone_set('America/New_York');
 
-    if(!isset($_SESSION['user_id']) || $mysql->getPos($_SESSION['user_id']) != 'W') {
+    if(!isset($_SESSION['user_id']) ) {
         header("location:../index.php");
     }
 

@@ -4,7 +4,7 @@
 
     $mysql = new Mysql();
 
-    if(!isset($_SESSION['user_id']) || $mysql->getPos($_SESSION['user_id']) != 'W') {
+    if(!isset($_SESSION['user_id'])) {
         header("location:../index.php");
     }
 
@@ -16,7 +16,6 @@
 echo ' <div class="panel-body">';
         // chapter
         if($catId == 9) {
-            include 'chapterForm.php';
             echo "<br>";
             $chaps = $mysql->getChapters();
             if($chaps->num_rows == 0) {

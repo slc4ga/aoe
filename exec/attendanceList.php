@@ -3,9 +3,11 @@
 	session_start();
 	$mysql = new Mysql();
 
-    if(!isset($_SESSION['user_id']) || $mysql->checkExec($_SESSION['user_id']) == 1 || $mysql->getPos($_SESSION['user_id']) != 'W') {
+    if(!isset($_SESSION['user_id']) || $mysql->checkExec($_SESSION['user_id']) < 1) {
         header("location: ../index.php");
     }
+    
+    date_default_timezone_set('America/New_York');
 ?>
 
 <div id="points" class='col-md-11'>

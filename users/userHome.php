@@ -81,7 +81,7 @@
                                     <a href='../webmaster/webmaster.php' id='webmaster'>Webmaster Capabilities</a></li>";
                             }
 
-                            if($mysql->checkExec($_SESSION['user_id']) == 1 || $mysql->checkWebmaster($_SESSION['user_id'])) {
+                            if($mysql->checkExec($_SESSION['user_id']) == 1 ) {
                                 echo "<li>
                                     <a href='../exec/exec.php' id='exec'>Exec Capabilities</a></li>";
                             }
@@ -191,7 +191,7 @@
                                     ontime : 1 },
                             success: function(data){  
                                 $('#chapterLoginMessage').html(data);
-                                $('#chapterLoginButton').html("<div class='row'><div class='col-md-6 col-md-offset-3'><h5>Thanks, you've already checked in today!</h5></div></div>");
+                                $('#chapterLoginButton').html("");
                                 $.ajax({
                                     url: "monthlyPoints.php",
                                     success: function(data){  
@@ -223,7 +223,7 @@
                                     ontime : 0 },
                             success: function(data){  
                                 $('#chapterLoginMessage').html(data);
-                                $('#chapterLoginButton').html("<div class='row'><div class='col-md-6 col-md-offset-3'><h5>Thanks, you've already checked in today!</h5></div></div>");
+                                $('#chapterLoginButton').html("");
                                 $.ajax({
                                     url: "monthlyPoints.php",
                                     success: function(data){  

@@ -2,6 +2,8 @@
 
 require_once 'constants.php';
 
+date_default_timezone_set('America/New_York');
+
 class Mysql {
      
     private $mysqli;
@@ -258,7 +260,7 @@ class Mysql {
     }
     
     function checkExec($un) {
-        $sql = "select * from leadership inner join posList on leadership.position=posList.ID where username='$un' and `order`>0";
+        $sql = "select * from leadership inner join posList on leadership.position=posList.ID where username='$un' and (`order`>0 or position='W')";
         $result = $this->mysqli->query($sql) or die("check exec");  
         return $result->num_rows;
     }
@@ -434,7 +436,6 @@ class Mysql {
         $id = $_SESSION['user_id'];
         $sql = "update profiles set year=$year, hometown='$hometown', state='$country', major='$major', major2='$major2', 
             minor='$minor', minor2='$minor2', activities='$activities', bio='$bio' where username='$id'";
-        //echo $sql;
         $result = $this->mysqli->query($sql) or die("leadership lookup");  
         return true;
     }
@@ -539,7 +540,8 @@ class Mysql {
     function setChapterPass($pw) {
         $sql = "select id from events order by id desc limit 1";
         $result = $this->mysqli->query($sql) or die("get chapter id for pass");  
-        $lateId = $result->fetch_array(MYSQLI_NUM)[0];
+        $lateIdArray = $result->fetch_array(MYSQLI_NUM);
+        $lateId = $lateIdArray[0];
         
         $sql = "insert into chapterPass values($lateId, '$pw')";
         $result = $this->mysqli->query($sql) or die("set late chapter pass"); 
@@ -555,7 +557,7 @@ class Mysql {
     }
     
     function getPointsInSpecifiedMonth($month) {
-        $sql = "select points from events join pointsCategories on events.category=pointsCategories.num where date > '" . date('Y-m-1', $month) . "' and date < '". date('Y-m-t', $month) . "' and not events.category=10 and not events.category=11 and not events.category=9 and `order`=0";
+        $sql = "select points from events join pointsCategories on events.category=pointsCategories.num where date > '" . date('Y-m-1', $month) . "' and date < '". date('Y-m-d', time()) . "' and not events.category=10 and not events.category=11 and not events.category=9 and `order`=0";
         $result = $this->mysqli->query($sql) or die("get points in month");  
         $points = 0;
         while($row = mysqli_fetch_array($result)) {
@@ -610,6 +612,7 @@ class Mysql {
         while($row = mysqli_fetch_array($result)) {
             $points += $row[0];
         }
+        
         return $points;
     }
     
@@ -664,13 +667,15 @@ class Mysql {
         }
         $sql = "select id from events where category=9 and date='" . date('Y-m-d', strtotime($date)) . "' and event='$name'";
         $result = $this->mysqli->query($sql) or die("find current chapter id");  
-        $id = mysqli_fetch_array($result)[0];
+        $idArray = mysqli_fetch_array($result);
+        $id = $idArray[0];
         
         // check password
         $sql = "select pass from chapterPass where eventId=$id";
         $result = $this->mysqli->query($sql) or die("find current chapter password");  
-        $pass = mysqli_fetch_array($result)[0];
-        
+        $passArray = mysqli_fetch_array($result);
+        $pass = $passArray[0];
+
         if($pass == $pw) {
             $sql = "insert into points values($id, '$username', 1)";
             $result = $this->mysqli->query($sql) or die("add chapter attendance");  
@@ -678,6 +683,52 @@ class Mysql {
             $html = '<div class="alert alert-danger" role="alert">
                         That password wasn\'t right..try again!
                     </div>';
+            $today = date('Y-m-d', time());
+            $today_formatted = date('n/j/Y', time());
+            if(time() > strtotime("7:50 PM") && time() < strtotime("8:15 PM")) { //on time
+                if($this->checkChapterAttendance($_SESSION['user_id'], date('Y-m-d', time())) == 0) {
+                    $html .= "<div class='row'>
+                        <div class='col-md-4 col-md-offset-4'>";
+                    $html .= "<button style='width: 100%' class='btn btn-lg btn-success' onclick=\"ontimeChapter('"
+                        . $_SESSION['user_id'] . "','" . $today . "')\">Check In <br>
+                        ($today_formatted)</button>";
+                    $html .= "  </div>
+                      </div>";
+                } else {
+                    $html .= "<div class='row'>
+                            <div class='col-md-6 col-md-offset-3'>
+                                <h5>Thanks, you've already checked in today!</h5>
+                            </div>
+                        </div>";    
+                }
+            } else if(time() < strtotime("8:20 PM")) { // late
+                    if($this->checkChapterAttendance($_SESSION['user_id'], date('Y-m-d', time())) == 0) {
+                        $html .= "<div class='row'>
+                                <div class='col-md-4 col-md-offset-4'>";
+                        $html .= "<button style='width: 100%' class='btn btn-lg btn-warning'
+                                onclick=\"lateChapter('" . $_SESSION['user_id'] . "','" . $today . "')\">
+                                    Check In <br> ($today_formatted)</button>";
+                        $html .= "  </div>
+                            </div>";
+                    } else {
+                        $html .= "<div class='row'>
+                                <div class='col-md-6 col-md-offset-3'>
+                                    <h5>Thanks, you've already checked in today!</h5>
+                                </div>
+                            </div>";    
+                    }
+            } else if(time() < strtotime("9:15 PM")) { // too late
+                if($this->checkChapterAttendance($_SESSION['user_id'], date('Y-m-d', time())) == 0) {
+                    $html .= "<div class='row'>
+                        <div class='col-md-12'>";
+                    $html .= "<div class='alert alert-danger' role='alert'>
+                            <strong>Oh snap!</strong> You were too late to chapter to check in. 
+                            Try to be on time next time!
+                        </div>";
+                    $html .= "</div>
+                        </div>";
+                }
+            }
         }
         return $html;
     }
@@ -695,13 +746,13 @@ class Mysql {
     }
     
     function checkChapterAttendance($un, $date) {
-        $sql = "select * from points inner join events on points.eventId=events.id where username = '$un' and date = '$date'";
+        $sql = "select * from points inner join events on points.eventId=events.id where username = '$un' and date = '$date' and category=9";
         $result = $this->mysqli->query($sql) or die("check chapter attendance");  
         return $result->num_rows;    
     }
     
     function checkChapterPoints($un, $date) {
-        $sql = "select points from points inner join events on points.eventId=events.id where username = '$un' and date = '$date'";
+        $sql = "select points from points inner join events on points.eventId=events.id where username = '$un' and date = '$date' and category=9";
         $result = $this->mysqli->query($sql) or die("check chapter points");  
         return $result;    
     }
@@ -822,7 +873,8 @@ class Mysql {
     function addBabyEventForm($cat) {
         $sql = "select category from pointsCategories where num=$cat";
         $result = $this->mysqli->query($sql) or die("add baby event form");  
-        $name = mysqli_fetch_array($result)[0];
+        $nameArray = mysqli_fetch_array($result);
+        $name = $nameArray[0];
         
         echo '
         <div class="row"><div class="col-md-8 col-md-offset-2">

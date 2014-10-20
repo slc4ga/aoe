@@ -8,7 +8,7 @@
     }
 
 
-    if($_POST) {
+    if($_POST && isset$_POST['year']) {
         $activities = $_POST['activities'];
         $array = explode("\n", $activities);
         $mysql->updateProfile($_POST['year'], $_POST['hometown'], $_POST['country'], $_POST['major'], $_POST['major2'], 

@@ -6,7 +6,7 @@
     $exec = $mysql->getExec();
     $chairs = $mysql->getPositions();
 
-    if(!isset($_SESSION['user_id']) || $mysql->checkExec($_SESSION['user_id']) == 1 || $mysql->getPos($_SESSION['user_id']) != 'W') {
+    if(!isset($_SESSION['user_id']) || $mysql->checkExec($_SESSION['user_id']) < 1) {
         header("location:../index.php");
     }
 
