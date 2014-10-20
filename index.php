@@ -129,6 +129,12 @@
                         supervise or control the organization and is not responsible for the organization’s contracts, acts 
                         or omissions.
                     </p>
+                    <hr>
+                    <h4>Source Code</h4>
+                    <p>
+                        The source code for this site can be found at <a href="https://github.com/slc4ga/aoe">this github repo</a>, 
+                        and was all written by <a href="mailto:slc4ga@virginia.edu">Steph Colen</a>.
+                    </p>
                     <br>
                  </div>
                 
