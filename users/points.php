@@ -17,6 +17,7 @@
         $monthPoints = $mysql->getPointsInMonth();
         echo "<h4 id='monthly-points'>" . date('F', time()) . " points <em>so far</em>: " . $userPoints . "/" . $monthPoints . "</h4>";
 
+
         $daysLeft = date('t', time()) - date('d', time());
         if($daysLeft < 10) {
             if($userPoints/$monthPoints < POINTS_QUOTA) {

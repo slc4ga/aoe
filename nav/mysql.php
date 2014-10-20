@@ -865,9 +865,25 @@ class Mysql {
     }
     
     function getTotalPointsForUser() {
-        $sql = "select profiles.username, sum(points) from profiles left join points on profiles.username=points.username left join events on events.id=points.eventId where not profiles.pc like '%Alumnae%' group by profiles.username order by profiles.first_name asc";
+        $sql = "select profiles.username, sum(points) from profiles left join points on profiles.username=points.username left join events on events.id=points.eventId where not profiles.pc like '%Alumnae%' and points.approved=1 group by profiles.username order by profiles.first_name asc";
         $result = $this->mysqli->query($sql) or die("get total points for all users");  
         return $result;
+    }
+
+    function getTotalPointsForOneUser($un) {
+        $sql = "select sum(points) from points left join events on events.id=points.eventId where username='$un' and points.approved=1";
+        $result = $this->mysqli->query($sql) or die("get total points for one user");  
+        $pointsArray = mysqli_fetch_array($result);
+        $points = $pointsArray[0];
+
+        $commiteeRows = $this->getCommitteePositionPoints($un);
+        $commiteePoints = $commiteeRows->num_rows * COMMITTEE_POINTS;
+
+        $chairRows = $this->getChairPositionPoints($un);
+        $chairPoints = $chairRows->num_rows * CHAIR_POINTS;
+
+        $totalPoints = $points + $commiteePoints + $chairPoints;
+        return $totalPoints;
     }
     
     function addBabyEventForm($cat) {
