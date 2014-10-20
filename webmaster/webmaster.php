@@ -15,6 +15,11 @@
         }
     }
 
+    $pos = $_GET['pos'];
+    echo "<script>
+            var pos = '$pos';
+            </script>";
+
 ?>
 
 <!DOCTYPE html>

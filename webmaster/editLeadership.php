@@ -33,6 +33,19 @@
             <em> Use the search bars below to change who currently holds leadership positions within A&Omega;E Pi.</em>
         </p>
         <br>
+        <div id="posResult"></div>
+        <div class="row">
+            <div class="col-md-8">
+                <?  
+                include 'addPositionForm.php';
+                ?>
+            </div>
+            <div class="col-md-4">
+                <?
+                    include 'deletePositionForm.php';
+                ?>
+            </div>
+        </div>
         <hr>
 		<h3>Exec Board</h3>
 		<table class='table' id="execListTable">
@@ -103,6 +116,17 @@
 	</div>
 </div>
 <script type="text/javascript">  
+    if(pos === 'added') {
+        $('#posResult').html(
+          "<div class=\"alert alert-success alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span> </button> <strong>Nice!</strong> Your leadership position was added.</div>"  
+        );
+    } else if(pos === 'deleted') {
+        $('#posResult').html(
+          "<div class=\"alert alert-success alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span> </button> <strong>Nice!</strong> Your leadership position was deleted.</div>"  
+        );
+    }
+
+
     function addLeader(position) {
         var id1 = "searchid" + position;
         var id2 = "sisters" + position;

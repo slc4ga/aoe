@@ -35,9 +35,18 @@
         <br>
         <hr>
         <div id="posResult"></div>
-        <?
-            include 'addPositionForm.php';
-        ?>
+        <div class="row">
+            <div class="col-md-8">
+                <?  
+                include 'addPositionForm.php';
+                ?>
+            </div>
+            <div class="col-md-4">
+                <?
+                    include 'deletePositionForm.php';
+                ?>
+            </div>
+        </div>
         <hr>
 		<h3>Exec Board</h3>
 		<table class='table' id="execListTable">
@@ -111,6 +120,10 @@
     if(pos === 'added') {
         $('#posResult').html(
           "<div class=\"alert alert-success alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span> </button> <strong>Nice!</strong> Your leadership position was added.</div>"  
+        );
+    } else if(pos === 'deleted') {
+        $('#posResult').html(
+          "<div class=\"alert alert-success alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span> </button> <strong>Nice!</strong> Your leadership position was deleted.</div>"  
         );
     }
     

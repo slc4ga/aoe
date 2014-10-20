@@ -330,7 +330,7 @@ class Mysql {
     
     function getExec() {
         $sql = "SELECT DISTINCT posList.id,posList.name FROM posList left join leadership on 
-                posList.id=leadership.position where not posList.order=0 and not posList.order=-1 order by posList.order asc";
+                posList.id=leadership.position where posList.order > 0 order by posList.order asc";
         $result = $this->mysqli->query($sql) or die("exec"); 
         return $result;
     }
@@ -338,7 +338,7 @@ class Mysql {
     function search() {
         $sql = "select first_name,last_name from profiles where first_name like '%$q%' 
             or last_name like '%$q%' order by first_name asc LIMIT 5";
-        $result = $this->mysqli->query($sql) or die("exec"); 
+        $result = $this->mysqli->query($sql) or die("search"); 
         return $result;
     }
     
@@ -386,6 +386,12 @@ class Mysql {
         
         $sql = "insert into posList values('$id', '$name', $order)";
         $result = $this->mysqli->query($sql) or die("insert leadership pos"); 
+        return $result;        
+    }
+
+    function deleteLeaderPosition($name) {
+        $sql = "update posList set `order`=-2 where id='$name'";
+        $result = $this->mysqli->query($sql) or die("delete leadership pos"); 
         return $result;        
     }
     
