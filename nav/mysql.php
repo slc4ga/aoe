@@ -557,7 +557,12 @@ class Mysql {
     }
     
     function getPointsInSpecifiedMonth($month) {
-        $sql = "select points from events join pointsCategories on events.category=pointsCategories.num where date > '" . date('Y-m-1', $month) . "' and date < '". date('Y-m-d', time()) . "' and not events.category=10 and not events.category=11 and not events.category=9 and `order`=0";
+        $minDate = date('Y-m-d', time());
+        if(date('Y-m-t', $month) < $minDate) {
+            $minDate = date('Y-m-t', $month);
+        }
+        $sql = "select points from events join pointsCategories on events.category=pointsCategories.num where date > '" . date('Y-m-1', $month) . "' and date < '". $minDate . "' and not events.category=10 and not events.category=11 and not events.category=9 and `order`=0";
+        echo $sql;
         $result = $this->mysqli->query($sql) or die("get points in month");  
         $points = 0;
         while($row = mysqli_fetch_array($result)) {
@@ -567,6 +572,7 @@ class Mysql {
         // add chapter points
         $sql = "select distinct date from events where category=9 and date > '" . date('Y-m-1', $month) . "' and date < '" 
             . date('Y-m-t', $month) . "'";
+        echo $sql;
         $result = $this->mysqli->query($sql) or die("get chapter points in month");  
         $points += $result->num_rows * CHAPTER_POINTS;
         return $points;   
