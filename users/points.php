@@ -15,8 +15,10 @@
     <?
         $userPoints = $mysql->getPointsInMonthForUser($_SESSION['user_id']);
         $monthPoints = $mysql->getPointsInMonth();
+       
         echo "<h4 id='monthly-points'>" . date('F', time()) . " points <em>so far</em>: " . $userPoints . "/" . $monthPoints . "</h4>";
-
+        echo "<h4 id='monthly-points'>Total points overall: " . $mysql->getTotalPointsForOneUser($_SESSION['user_id']) . "/" . 
+                $mysql->getTotalPointsOverall() . "</h4>";
 
         $daysLeft = date('t', time()) - date('d', time());
         if($daysLeft < 10) {
