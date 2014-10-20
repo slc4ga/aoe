@@ -22,7 +22,7 @@
                     <div class=\"panel-heading\">
                       <h4 class=\"panel-title\">
                         <a data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#$eventInfo[0]\">
-                          $eventInfo[1]
+                          $eventInfo[1] - " . date('n/j/Y', strtotime($eventInfo[3])) . "
                         </a>
                         <div class=\"pull-right\" id=\"" . $row[0] . "-points\">
                             <em>(" . $attendance->num_rows . ")</em>
@@ -49,7 +49,8 @@
                                                 echo " </tr>";
                                             }
                                     echo "</table>
-                                        <input type=\"submit\" class=\"btn btn-success\" value=\"Approve Attendance\" />";
+                                        <input type=\"submit\" class=\"btn btn-success\" value=\"Approve Attendance\" />
+                                        </form>";
                             } else {
                                 echo "<p style=\"text-align: center\">
                                         <em>No sisters have submitted attendance for this event yet.</em>

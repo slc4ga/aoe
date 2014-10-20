@@ -19,7 +19,7 @@
     sister names with checkboxes
     approve all checked
 -->
-    
+    <div id="approvesuccess"></div>
     <div class="row">
         <div class="col-md-8">
             <select id="semester" name="semester" class="form-control">
@@ -65,3 +65,10 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    if(approve === 'success') {
+        $('#approvesuccess').html(
+          "<div class=\"alert alert-success alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span> </button> <strong>Nice!</strong> Your attendance approval was recorded.</div>"  
+        );
+    }
+</script>

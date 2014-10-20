@@ -825,7 +825,7 @@ class Mysql {
         // date = year-1 or year-8
         $end = strtotime("+4 month", $date);
         $sql = "select * from events where date > '" . date('Y-m-1', $date) . "' and date < '" . date('Y-m-t', $end) 
-            . "' and not category=9";
+            . "' and not category=9 order by date asc";
         $result = $this->mysqli->query($sql) or die("get semester events");  
         return $result; 
     }
