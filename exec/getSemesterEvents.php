@@ -24,7 +24,7 @@
                         <a data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#$eventInfo[0]\">
                           $eventInfo[1] - " . date('n/j/Y', strtotime($eventInfo[3])) . "
                         </a>
-                        <div class=\"pull-right\" id=\"" . $row[0] . "-points\">
+                        <div class=\"pull-right\" >
                             <em>(" . $attendance->num_rows . ")</em>
                         </div>
                       </h4>

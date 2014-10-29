@@ -168,6 +168,81 @@
                                 <img class="example-image" src="../img/album/album17.jpg" alt="" 
                                      width="200" height="150"/>
                             </a>
+                            <a class="example-image-link" href="../img/album/album18.jpg" data-lightbox="aoe" 
+                               title="Homecoming Tailgate 2014: A few of our lovely BMEs">
+                                <img class="example-image" src="../img/album/album18.jpg" alt="" 
+                                     width="132" height="150"/>
+                            </a>
+                            <a class="example-image-link" href="../img/album/album21.jpg" data-lightbox="aoe" 
+                               title="Homecoming Tailgate 2014: Sisters participating in Pancakes for Parkinsons">
+                                <img class="example-image" src="../img/album/album21.jpg" alt="" 
+                                     width="132" height="150"/>
+                            </a>
+                            <a class="example-image-link" href="../img/album/album26.jpg" data-lightbox="aoe" 
+                               title="Homecoming Tailgate 2014: Everyone loves when alums come back to visit!">
+                                <img class="example-image" src="../img/album/album26.jpg" alt="" 
+                                     width="132" height="150"/>
+                            </a>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="image-row" style="margin-top: -16px">
+                        <div class="image-set"> 
+                            <a class="example-image-link" href="../img/album/album19.jpg" data-lightbox="aoe" 
+                               title="Homecoming Tailgate 2014: A.O.E. sisters are E-Stud board members too!">
+                                <img class="example-image" src="../img/album/album19.jpg" alt="" 
+                                     width="200" height="150"/>
+                            </a>
+                            <a class="example-image-link" href="../img/album/album20.jpg" data-lightbox="aoe" 
+                               title="Homecoming Tailgate 2014: Sisters clean up so nicely!">
+                                <img class="example-image" src="../img/album/album20.jpg" alt="" 
+                                     width="200" height="150"/>
+                            </a>
+                            <a class="example-image-link" href="../img/album/album22.jpg" data-lightbox="aoe" 
+                               title="Homecoming Tailgate 2014: More alumnae and honorary sisters">
+                                <img class="example-image" src="../img/album/album22.jpg" alt="" 
+                                     width="200" height="150"/>
+                            </a>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="image-row" style="margin-top: -16px">
+                        <div class="image-set"> 
+                            <a class="example-image-link" href="../img/album/album23.jpg" data-lightbox="aoe" 
+                               title="Homecoming Tailgate 2014: Even two years out of college, sisters still come back to visit!">
+                                <img class="example-image" src="../img/album/album23.jpg" alt="" 
+                                     width="200" height="150"/>
+                            </a>
+                            <a class="example-image-link" href="../img/album/album24.jpg" data-lightbox="aoe" 
+                               title="Homecoming Tailgate 2014: Our strong alumnae showing - from Madison, WI to Northern Virginia and everywhere in between">
+                                <img class="example-image" src="../img/album/album24.jpg" alt="" 
+                                     width="200" height="150"/>
+                            </a>
+                            <a class="example-image-link" href="../img/album/album25.jpg" data-lightbox="aoe" 
+                               title="Homecoming Tailgate 2014: 2015 sisters feelin' old">
+                                <img class="example-image" src="../img/album/album25.jpg" alt="" 
+                                     width="200" height="150"/>
+                            </a>
+                        </div>
+                    </div>
+                                        <br>
+                    <div class="image-row" style="margin-top: -16px">
+                        <div class="image-set"> 
+                            <a class="example-image-link" href="../img/album/album27.jpg" data-lightbox="aoe" 
+                               title="Homecoming Game 2014: A.O.E. does football best">
+                                <img class="example-image" src="../img/album/album27.jpg" alt="" 
+                                     width="132" height="150"/>
+                            </a>
+                            <a class="example-image-link" href="../img/album/album28.jpg" data-lightbox="aoe" 
+                               title="Homecoming Game 2014: Third year BMEs do remember to take study breaks!">
+                                <img class="example-image" src="../img/album/album28.jpg" alt="" 
+                                     width="132" height="150"/>
+                            </a>
+                            <a class="example-image-link" href="../img/album/album29.jpg" data-lightbox="aoe" 
+                               title="Homecoming Game 2014: Football and friends, what more could you ask for?">
+                                <img class="example-image" src="../img/album/album29.jpg" alt="" 
+                                     width="132" height="150"/>
+                            </a>
                         </div>
                     </div>
                  </div>      
