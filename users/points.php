@@ -22,14 +22,14 @@
 
         $daysLeft = date('t', time()) - date('d', time());
         if($daysLeft < 10) {
-            if($userPoints/$monthPoints < POINTS_QUOTA) {
+            if($monthPoints > 0 && $userPoints/$monthPoints < POINTS_QUOTA) {
                 echo '<div class="alert alert-danger" role="alert">';
                 echo "  <strong>Uh oh!</strong> There are only $daysLeft days left in " . date('F', time()) . 
                     " and you haven't quite met the points quota...make sure you get all your points entered!";
                 echo '</div>';
             }
         }
-        if($userPoints/$monthPoints > POINTS_QUOTA) {
+        if($monthPoints > 0 && $userPoints/$monthPoints > POINTS_QUOTA) {
             echo '<div class="alert alert-success" role="alert">';
             echo "  <strong>Great job!</strong> There are  $daysLeft days left in " . date('F', time()) . 
                 " and you've already met your attendance requirements!";
