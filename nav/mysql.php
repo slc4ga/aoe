@@ -934,6 +934,12 @@ class Mysql {
         echo $date;
         
     }
+    
+    function deactivateSister($un) {
+        $sql = "delete from users where username='$un'";
+        $result = $this->mysqli->query($sql) or die("deactivate/delete");  
+        return $result;
+    }
 }
 
 ?>

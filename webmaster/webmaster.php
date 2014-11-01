@@ -175,6 +175,18 @@
                     return false;
                 }
             }
+            
+            function deleteSister() {
+                var un = document.getElementById('deleteSister').value;
+                alert(un);
+                $.ajax({
+                        url: 'deactivateSister.php',
+                        data: { sister : un},
+                        success: function(data){
+                            $('#content').html(data);   
+                        }
+                });
+            }
         </script>
     </body>
 </html>

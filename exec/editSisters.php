@@ -31,6 +31,23 @@
 			?>
 		</table>
 	</div>
+    <hr>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-2">
+            <select name="deleteSister" id="deleteSister" class="form-control" style="margin-bottom: 15px">
+                <option selected disabled>Choose Sister</option>
+                <?
+                    $sisters = $mysql->getAllActiveSisters();
+                    while ($sisterInfo = mysqli_fetch_array($sisters)) {
+                        echo "<option value='$sisterInfo[0]'>$sisterInfo[1] $sisterInfo[2]</option>";
+                    }
+                ?>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <button class="btn btn-danger" onclick='deleteSister()' style="width: 100%; margin-bottom: 15px">Delete Sister</button>
+        </div>
+    </div>
 	<div id='classmembers'>
 		<h3 id='classheader'></h3>
 		<div id ='classtable'>
