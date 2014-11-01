@@ -940,6 +940,12 @@ class Mysql {
         $result = $this->mysqli->query($sql) or die("deactivate/delete");  
         return $result;
     }
+    
+    function checkChapterMade($today) {
+        $sql = "select from events where date='$today' and category=9";
+        $result = $this->mysqli->query($sql) or die("check chapter event made");  
+        return $result->num_rows;
+    }
 }
 
 ?>

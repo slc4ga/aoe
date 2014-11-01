@@ -67,7 +67,8 @@
                                 if($row[0] == 9) {
                                     echo "<div id='chapterLoginMessage'></div>
                                             <div id='chapterLoginButton'>";
-                                    if(date('w', time()) == '0') { // if sunday
+                                    $today = date('Y-m-d', time());
+                                    if(date('w', time()) == '0' && $mysql->checkChapterMade($today) == 1) { // if sunday
                                         $today = date('Y-m-d', time());
                                         $today_formatted = date('n/j/Y', time());
                                         
