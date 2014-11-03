@@ -1,4 +1,8 @@
-<form action="nav/executeLogin.php" method="post" accept-charset="UTF-8">
+<?
+$path = "/nav/executeLogin.php";
+?>
+
+<form action="<? echo $path; ?>" method="post" accept-charset="UTF-8">
 
     <input class="form-control" style="margin-bottom: 15px;" type="text" name="un"  
            size="50" <?

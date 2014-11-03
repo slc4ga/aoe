@@ -93,8 +93,8 @@
                         <strong class=\"caret\"></strong></a>
                     <div class=\"dropdown-menu\" style=\"padding: 15px; width:225px\">
                 <!-- Login form here -->";
-                    //$root = realpath($_SERVER["DOCUMENT_ROOT"]);
-                    include "nav/login.php";
+                    $root = realpath($_SERVER["DOCUMENT_ROOT"]);
+                    include "$root/nav/login.php";
                     echo "</div></li>";
                 } else {
                     echo "<li> <a href=\"/nav/logout.php\">Logout </a></li>";

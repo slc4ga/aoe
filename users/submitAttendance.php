@@ -50,12 +50,17 @@ echo ' <div class="panel-body">';
                 echo "<table class='table table-hover'>
                         <tbody>";
                     while($individualEvent = mysqli_fetch_array($events)) {                                              
-                        echo "<tr>
+                        $approved = $mysql->checkAttendanceApproval($_SESSION['user_id'], $individualEvent[0]);
+                        echo "<tr";
+                        if($approved == 1) {
+                            echo " class=\"success\"";
+                        }
+                        echo      ">
                                 <td>$individualEvent[1]<br><em>$individualEvent[4] points</em></td>
                                 <td>" . date('n/j/Y', strtotime($individualEvent[3])) . "</td>
                                 <td style='text-align: center'>";
                                 if($mysql->checkAttendance($_SESSION['user_id'], $individualEvent[0]) == 0) {
-                                    echo "<button onclick='submitAttendance($individualEvent[0], $catId)' 
+                                    echo "<button onclick='submitAttendance($individualEvent[0], $row[0])' 
                                             class='btn btn-success'>
                                                 I attended
                                         </button>";

@@ -17,7 +17,17 @@
         $monthPoints = $mysql->getPointsInMonth();
        
         echo "<h4 id='monthly-points'>" . date('F', time()) . " points <em>so far</em>: " . $userPoints . "/" . $monthPoints . "</h4>";
-        echo "<h4 id='monthly-points'>Total points overall: " . $mysql->getTotalPointsForOneUser($_SESSION['user_id']) . "/" . 
+        if(date('d', time()) < 10) { // display last month's points
+            $currentMonth = date('Y-m-d', time());
+            $lastMonthFormatted = date('Y-m-d', strtotime($currentMonth . " last month"));
+            $lastMonth = date('F', strtotime($currentMonth . " last month"));
+            
+            $lastUserPoints = $mysql->getPointsInSpecifiedMonthForUser(strtotime($lastMonthFormatted), $_SESSION['user_id']);
+            $lastMonthPoints = $mysql->getPointsInSpecifiedMonth(strtotime($lastMonthFormatted));
+            
+            echo "<h4>" . $lastMonth . " points: " . $lastUserPoints . "/" . $lastMonthPoints . "</h4>";
+        }
+        echo "<h4 id='total-points'>Total points overall: " . $mysql->getTotalPointsForOneUser($_SESSION['user_id']) . "/" . 
                 $mysql->getTotalPointsOverall() . "</h4>";
 
         $daysLeft = date('t', time()) - date('d', time());
@@ -28,12 +38,13 @@
                     " and you haven't quite met the points quota...make sure you get all your points entered!";
                 echo '</div>';
             }
-        }
-        if($monthPoints > 0 && $userPoints/$monthPoints > POINTS_QUOTA) {
-            echo '<div class="alert alert-success" role="alert">';
-            echo "  <strong>Great job!</strong> There are  $daysLeft days left in " . date('F', time()) . 
-                " and you've already met your attendance requirements!";
-            echo '</div>';
+        
+            if($monthPoints > 0 && $userPoints/$monthPoints > POINTS_QUOTA) {
+                echo '<div class="alert alert-success" role="alert">';
+                echo "  <strong>Great job!</strong> There are  $daysLeft days left in " . date('F', time()) . 
+                    " and you've already met your attendance requirements!";
+                echo '</div>';
+            }
         }
     ?>
     <div id="addsuccess"></div>
@@ -68,11 +79,11 @@
                                     echo "<div id='chapterLoginMessage'></div>
                                             <div id='chapterLoginButton'>";
                                     $today = date('Y-m-d', time());
-                                    if(date('w', time()) == '0' && $mysql->checkChapterMade($today) == 1) { // if sunday
+                                    if(date('w', time()) == '0' && $mysql->checkChapterMade($today) >= 1) { // if sunday
                                         $today = date('Y-m-d', time());
                                         $today_formatted = date('n/j/Y', time());
                                         
-                                        if(time() > strtotime("7:50 PM") && time() < strtotime("8:15 PM")) { //on time
+                                        if(time() > strtotime("7:50 PM") && time() < strtotime("10:00 PM")) { //on time
                                             if($mysql->checkChapterAttendance($_SESSION['user_id'], date('Y-m-d', time())) == 0) {
                                                 echo "<div class='row'>
                                                     <div class='col-md-4 col-md-offset-4'>";
@@ -88,7 +99,7 @@
                                                         </div>
                                                     </div>";    
                                             }
-                                        } else if(time() < strtotime("8:20 PM")) { // late
+                                        } else if(time() > strtotime("8:10 PM") && time() < strtotime("8:20 PM")) { // late
                                                 if($mysql->checkChapterAttendance($_SESSION['user_id'], date('Y-m-d', time())) == 0) {
                                                     echo "<div class='row'>
                                                             <div class='col-md-4 col-md-offset-4'>";
@@ -104,7 +115,7 @@
                                                             </div>
                                                         </div>";    
                                                 }
-                                        } else if(time() < strtotime("9:15 PM")) { // too late
+                                        } else if(time() > strtotime("8:20 PM") && time() < strtotime("9:15 PM")) { // too late
                                             if($mysql->checkChapterAttendance($_SESSION['user_id'], date('Y-m-d', time())) == 0) {
                                                 echo "<div class='row'>
                                                     <div class='col-md-12'>";
@@ -135,8 +146,10 @@
                                                 if($chapter_date_formatted <= date('Y-m-d', time())) {                                                        
                                                     // if red
                                                     if($chapter_result->num_rows == 0) {
-                                                        if(date('G:i' , time()) > date('G:i', strtotime("9:00 PM"))){
-                                                            echo " missed";   
+                                                        if($chapter_date_formatted < date('Y-m-d', time())) {
+                                                            echo " missed"; 
+                                                        } else if (date('G:i' , time()) > date('G:i', strtotime("9:00 PM"))) {
+                                                            echo " missed";
                                                         }
                                                     }
                                                     // if yellow
