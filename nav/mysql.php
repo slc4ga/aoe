@@ -271,6 +271,13 @@ class Mysql {
         $result = $this->mysqli->query($sql) or die("adding testimonial");  
         return $sql;
     }
+
+    function addFeedback($message) {
+        $message = $this->quote_smart($message);
+        $sql = "insert into feedback values (null,'$message','" . date('Y-m-d', time()) . "', 0)";
+        echo $sql;
+        $result = $this->mysqli->query($sql) or die("adding feedback");  
+    }
     
     function getTestimonialNums() {
         $sql = "select count(*) from testimonials where approved=0";
@@ -297,6 +304,12 @@ class Mysql {
         $result = $this->mysqli->query($sql) or die("all approved testimonials");
         return $result;
     }
+
+    function getAllUnacknowledgedFeedback() {
+        $sql = "select * from feedback where ack=0 order by date asc";
+        $result = $this->mysqli->query($sql) or die("getAllUnacknowledgedFeedback ");
+        return $result;
+    }
         
     function getTestimonial($id) {
         $sql = "select message from testimonials where id=$id";
@@ -308,6 +321,11 @@ class Mysql {
     function deleteTestimonial($id) {
         $sql = "delete from testimonials where id=$id";
         $result = $this->mysqli->query($sql) or die("delete testimonials");
+    }
+
+    function acknowledgeFeedback($req) {
+        $sql = "update feedback set ack=1 where id=$req";
+        $result = $this->mysqli->query($sql) or die("ack feedback");
     }
     
     function approve($id) {

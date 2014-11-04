@@ -76,6 +76,8 @@
                             <a href="javascript.void(0);" id="sistersedit">Manage Sisters</a></li>
                         <li id="leadershipLi" >
                             <a href="javascript.void(0);" id="leadershipedit">Update Leadership</a></li>
+                        <li id="feedbackLi" >
+                            <a href="javascript.void(0);" id="feedback">View Feedback</a></li>
                     </ul>
                  </div>
                 
@@ -129,6 +131,14 @@
                                     }
                                 });
                                 document.getElementById("attendanceLi").className += " active";
+                            } else if(select.indexOf(6) != -1) {
+                                $.ajax({
+                                    url: 'feedback.php',
+                                    success: function(data){
+                                        $('#content').html(data);   
+                                    }
+                                });
+                                document.getElementById("feedbackLi").className += " active";
                             }
                         </script>
                     </div>
@@ -277,6 +287,18 @@
                         }
                     });
                     document.getElementById("leadershipLi").className += " active";
+                    return false;
+                }
+
+                document.getElementById("feedback").onclick = function() {
+                    $('.nav-pills li').removeClass('active');
+                    $.ajax({
+                        url: 'feedback.php',
+                        success: function(data){
+                            $('#content').html(data);   
+                        }
+                    });
+                    document.getElementById("feedbackLi").className += " active";
                     return false;
                 }
             }

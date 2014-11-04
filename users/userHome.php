@@ -17,6 +17,13 @@
             } else {
                 header("location: userHome.php?select=3&t=no");
             }
+        } else if($_POST['feedbackbtn']) {
+            if(!empty($_POST['message'])) {
+                $mysql->addFeedback($_POST['message']);
+                header("location: userHome.php?select=1&f=yes");
+            } else {
+                header("location: userHome.php?select=3&f=no");
+            }
         }
     }
 
@@ -75,6 +82,8 @@
                             <a href="javascript.void(0);" id="testimonial">Submit Testimonial</a></li>
                         <li id="passwordLi" >
                             <a href="javascript.void(0);" id="password">Change Password</a></li>
+                        <li id="feedbackLi" >
+                            <a href="javascript.void(0);" id="feedback">Submit Feedback</a></li>
                         <?
                             if($mysql->checkWebmaster($_SESSION['user_id'])) {
                                 echo "<li>
@@ -98,6 +107,14 @@
                                 echo "<div class=\"alert alert-success\">  
                                         <a class=\"close\" data-dismiss=\"alert\">×</a>  
                                         <strong>Testimonial submission succeeded!</strong>
+                                    </div>";     
+                            }
+
+                            $message = $_GET['f'];
+                            if(isset($message) && $message == "yes") {
+                                echo "<div class=\"alert alert-success\">  
+                                        <a class=\"close\" data-dismiss=\"alert\">×</a>  
+                                        <strong>Feedback submission succeeded!</strong>
                                     </div>";     
                             }
                         ?>
@@ -155,6 +172,14 @@
                                     }
                                 });
                                 document.getElementById("pointsLi").className += " active";
+                            } else if(select.indexOf(7) != -1) {
+                                $.ajax({
+                                    url: 'feedback.php',
+                                    success: function(data){
+                                        $('#content').html(data);   
+                                    }
+                                });
+                                document.getElementById("feedbackLi").className += " active";
                             }
                         </script>
                     </div>
@@ -313,6 +338,18 @@
                         }
                     });
                     document.getElementById("pointsLi").className += " active";
+                    return false;
+                }
+
+                document.getElementById("feedback").onclick = function() {
+                    $('.nav-pills li').removeClass('active');
+                    $.ajax({
+                        url: 'feedback.php',
+                        success: function(data){
+                            $('#content').html(data);   
+                        }
+                    });
+                    document.getElementById("feedbackLi").className += " active";
                     return false;
                 }
             }

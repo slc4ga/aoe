@@ -89,6 +89,10 @@
                                         class='btn btn-info'>
                                             Approve Event
                                     </button>
+                                    <button onclick='deleteEvent($individualEvent[0], $cat)' 
+                                        class='btn btn-danger'>
+                                            Delete Event
+                                    </button>
                                 </td>
                               </tr>";
                     }
