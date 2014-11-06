@@ -275,7 +275,6 @@ class Mysql {
     function addFeedback($message) {
         $message = $this->quote_smart($message);
         $sql = "insert into feedback values (null,'$message','" . date('Y-m-d', time()) . "', 0)";
-        echo $sql;
         $result = $this->mysqli->query($sql) or die("adding feedback");  
     }
     
