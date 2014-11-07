@@ -216,7 +216,6 @@
             }
             
             function semesterBonus(date) {
-                alert(date);
                 $.ajax({
                     url: "getSemesterEvents.php",
                     data: { date: date,

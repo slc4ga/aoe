@@ -955,12 +955,15 @@ class Mysql {
             <br>
         </form></div></div>';
     }
-    
-    function checkSemesterBonus($date) {
-        
+
+    function checkLeadershipExpiration() {
+        $sql = "update leadership set current=0 where start_date <= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)";
+        $result = $this->mysqli->query($sql) or die("check leadership expiration"); 
     }
     
     function calculateSemesterBonus($date) {
+        $this->checkLeadershipExpiration();
+
         $end = strtotime("+4 month", $date);
         $date_formatted = date( 'Y-m-t', $end);
 

@@ -23,11 +23,9 @@
                 <h3>Semester Events</h3>
             </div>
             <div class=\"col-md-4 col-md-offset-2\"><h3>";
-    if ($mysql->checkSemesterBonus($date) == 0) {
         echo "<button class=\"btn btn-primary\" style='width: 100%; margin-bottom: 5px;' onclick=\"semesterBonus('" 
             . $dateString . "')\">
                 Calculate Bonus</button>";
-    }
     echo "</h3></div>
         </div>";
 ?>
