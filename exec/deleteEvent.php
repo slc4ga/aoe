@@ -43,7 +43,7 @@
                                     <td>$individualEvent[1]<br><em>$individualEvent[4] points</em></td>
                                     <td>" . date('n/j/Y', strtotime($individualEvent[3])) . "</td>
                                     <td style='text-align: center'>
-                                        <button onclick=deleteEvent($id, $divId) class='btn btn-danger'>Delete Event</button>
+                                        <button onclick=\"deleteEvent($id, $divId)\" class='btn btn-danger'>Delete Event</button>
                                     </td>
                                   </tr>";
                         }
