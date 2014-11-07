@@ -218,11 +218,11 @@
             function semesterBonus(date) {
                 alert(date);
                 $.ajax({
-                    url: "getPointsSummary.php",
+                    url: "getSemesterEvents.php",
                     data: { date: date,
                             calc: true },
                     success: function(data){  
-                        $('#summaryInfo').html(data);
+                        $('#semesterEvents').html(data);
                     }
                 });
                 return false;  

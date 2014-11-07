@@ -66,14 +66,6 @@
                         </div>
                         <div id="' . $row[0] . '" class="panel-collapse collapse">
                             <div class="panel-body">';
-                                // baby event form
-                                $isMandatory = $mysql->checkCategoryIsMandatory($row[0]);
-                                if($isMandatory == 0) {
-                                   echo "<p style='text-align: center'><em>
-                                        Remember - these points aren't counted towards your monthly totals!
-                                        </em></p>"; 
-                                    $mysql->addBabyEventForm($row[0]);
-                                } 
                                 // chapter
                                 if($row[0] == 9) {
                                     echo "<div id='chapterLoginMessage'></div>
@@ -192,10 +184,20 @@
                                     while($pos = mysqli_fetch_array($chairs, MYSQLI_ASSOC)) {
                                         echo "<h5 style='text-align: center'>" . $pos["name"] . "</h5>";
                                     }
-                                }
+                                } 
                                 // all other categories
                                 else {
                                     $events = $mysql->getEventsInCategory($row[0]);
+                                    // baby event form - don't add if bonus category
+                                    if($row[0] != 16) {
+                                        $isMandatory = $mysql->checkCategoryIsMandatory($row[0]);
+                                        if($isMandatory == 0) {
+                                           echo "<p style='text-align: center'><em>
+                                                Remember - these points aren't counted towards your monthly totals!
+                                                </em></p>"; 
+                                            $mysql->addBabyEventForm($row[0]);
+                                        } 
+                                    }
                                     if($events->num_rows == 0) {
                                         echo "<p style='text-align:center'><em>No events in this category yet!</em></p>";    
                                     } else {
@@ -211,11 +213,13 @@
                                                         <td>$individualEvent[1]<br><em>$individualEvent[4] points</em></td>
                                                         <td>" . date('n/j/Y', strtotime($individualEvent[3])) . "</td>
                                                         <td style='text-align: center'>";
-                                                        if($mysql->checkAttendance($_SESSION['user_id'], $individualEvent[0]) == 0) {
-                                                            echo "<button onclick='submitAttendance($individualEvent[0], $row[0])' 
-                                                                    class='btn btn-success'>
-                                                                        I attended
-                                                                </button>";
+                                                        if($row[0] != 16) {
+                                                            if($mysql->checkAttendance($_SESSION['user_id'], $individualEvent[0]) == 0) {
+                                                                echo "<button onclick='submitAttendance($individualEvent[0], $row[0])' 
+                                                                        class='btn btn-success'>
+                                                                            I attended
+                                                                    </button>";
+                                                            }
                                                         }
                                                 echo "  </td>
                                                       </tr>";

@@ -10,7 +10,7 @@
     }
 
     $date = $_GET['date'];
-    $calc = $_GET['calc'];
+    
 
     if($date != "total") {
         $date = explode("/", $_GET['date']);
@@ -18,10 +18,6 @@
         $year = $date[1];
 
         $date = strtotime("$year-$month");
-
-        if($calc == "true") {
-            $mysql->calculateSemesterBonus($date); 
-        }
 
         echo "<h4>Total points in " . date('F', $date) . ": " . $mysql->getPointsInSpecifiedMonth($date) . "</h4>";
         $sisterList = $mysql->getSisterQuota($date);
@@ -39,13 +35,8 @@
         $datadump = substr($datadump, 0, -2);
         
         echo "<div class='row'>";
-        echo "  <div class=\"col-md-6\">";
-            if ($mysql->checkSemesterBonus($date) == 0) {
-                echo "<button class=\"btn btn-primary\" style='width: 100%; margin-bottom: 5px;' onclick=\"semesterBonus('" 
-                    . date('n/Y', $date) . "')\">
-                        Calculate Semester Bonus</button>";
-            }
-        echo " </div></div>";
+
+        echo "</div>";
         if (count($passingSisters) > 0) {
             echo "<div class='row'>";
             echo "  <div class=\"col-md-6\">

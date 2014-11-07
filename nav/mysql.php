@@ -609,7 +609,6 @@ class Mysql {
         if($this->checkCategoryIsMandatory($cat) == 0) {
             return 0;
         }
-        
         if($cat == 9) {
             $sql = "select distinct date from events where category=$cat and date <= '" . date('Y-m-d', time()) . "'";
             $result = $this->mysqli->query($sql) or die("get points in category for user");  
@@ -653,7 +652,15 @@ class Mysql {
             $sql = "select * from leadership inner join posList on leadership.`position`=posList.`id` where username='$un' and `order`=-1";
             $result = $this->mysqli->query($sql) or die("get points in category for user - committee"); 
             return $result->num_rows * COMMITTEE_POINTS;
-        } 
+        } else if($cat == 16) {
+            $sql = "select points from events inner join points on events.id = points.eventId where category=$cat and points.username = '$un' and points.approved=1";
+            $result = $this->mysqli->query($sql) or die("get points in semester bonus category");  
+            $points = 0;
+            while($row = mysqli_fetch_array($result)) {
+                $points += $row[0];
+            }
+            return $points;
+        }
         
         if($cat == 9) {
             $sql = "select distinct date, points from events inner join points on events.id = points.eventId where category=$cat and date <= '" . date('Y-m-d', time()) . "' and points.username = '$un' and points.approved=1";
@@ -677,6 +684,12 @@ class Mysql {
     function submitAttendance($un, $eventId) { 
         $sql = "insert into points values ($eventId, '$un', 0)";
         $result = $this->mysqli->query($sql) or die("submit attendance");  
+        return $result;
+    }
+
+    function submitApprovedAttendance($un, $eventId) { 
+        $sql = "insert into points values ($eventId, '$un', 1)";
+        $result = $this->mysqli->query($sql) or die("submit approved attendance");  
         return $result;
     }
     
@@ -948,9 +961,57 @@ class Mysql {
     }
     
     function calculateSemesterBonus($date) {
-        echo $date;
+        $end = strtotime("+4 month", $date);
+        $date_formatted = date( 'Y-m-t', $end);
+
+        $sql = "insert into events values (null, 'Professional Bonus', 16, '$date_formatted', 3, 1)";
+        $result = $this->mysqli->query($sql) or die("add professional bonus");  
+
+        $sql = "insert into events values (null, 'Sisterhood Bonus', 16, '$date_formatted', 3, 1)";
+        $result = $this->mysqli->query($sql) or die("add sisterhood bonus");  
+
+        $sql = "insert into events values (null, 'Fundraising Bonus', 16, '$date_formatted', 3, 1)";
+        $result = $this->mysqli->query($sql) or die("add Fundraising bonus");  
+
+        $sql = "insert into events values (null, 'Chapter Bonus', 16, '$date_formatted', 3, 1)";
+        $result = $this->mysqli->query($sql) or die("add chapter bonus");  
+
+        $sql = "select id from events order by id desc limit 1";
+        $result = $this->mysqli->query($sql) or die("select last event id");  
+        $idArray = mysqli_fetch_array($result);
+        $id = $idArray[0];
+
+        $sisters = $this->getAllActiveSisters();
+        while($sisterInfo = mysqli_fetch_array($sisters)) {
+            if($this->getAllSemesterPointsByCategory ($date, $sisterInfo[0], 9) > 30) {
+                $this->submitApprovedAttendance($sisterInfo[0], $id);
+            }
+
+            if($this->getAllSemesterPointsByCategory ($date, $sisterInfo[0], 1) > 10) {
+                $this->submitApprovedAttendance($sisterInfo[0], ($id-3));
+            }
+
+            if($this->getAllSemesterPointsByCategory ($date, $sisterInfo[0], 2) > 10) {
+                $this->submitApprovedAttendance($sisterInfo[0], ($id-2));
+            }
+
+            if($this->getAllSemesterPointsByCategory ($date, $sisterInfo[0], 3) > 10) {
+                $this->submitApprovedAttendance($sisterInfo[0], ($id-1));
+            }  
+        }
+        
     }
     
+    function getAllSemesterPointsByCategory ($date, $un, $cat) {
+        // date = year-1 or year-8
+        $end = strtotime("+5 month", $date);
+        $sql = "select SUM(`points`) from events inner join points on events.id=points.eventId where date > '" . date('Y-m-1', $date) . 
+            "' and date < '" . date('Y-m-1', $end) . "' and points.approved=1 and points.username='$un' and events.category=$cat";
+        $result = $this->mysqli->query($sql) or die("get semester points for user by category"); 
+        $resultArray = mysqli_fetch_array($result); 
+        return $resultArray[0]; 
+    }
+
     function deactivateSister($un) {
         $sql = "delete from users where username='$un'";
         $result = $this->mysqli->query($sql) or die("deactivate/delete");  

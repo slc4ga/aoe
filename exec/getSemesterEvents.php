@@ -10,11 +10,31 @@
     }
 
     $date = explode(" - ", $_GET['date']);
+    $dateString = $date[0] . " - " . $date[1];
     $date = strtotime("$date[0]-$date[1]");
+    $calc = $_GET['calc'];
+
+    if($calc == "true") {
+        $mysql->calculateSemesterBonus($date); 
+    }
+
+    echo "<div class='row'>
+            <div class='col-md-6'>
+                <h3>Semester Events</h3>
+            </div>
+            <div class=\"col-md-4 col-md-offset-2\"><h3>";
+    if ($mysql->checkSemesterBonus($date) == 0) {
+        echo "<button class=\"btn btn-primary\" style='width: 100%; margin-bottom: 5px;' onclick=\"semesterBonus('" 
+            . $dateString . "')\">
+                Calculate Bonus</button>";
+    }
+    echo "</h3></div>
+        </div>";
 ?>
-<h3>Semester Events</h3>
 <div class="panel-group" id="accordion">
 <?
+
+
     $events = $mysql->getSemesterEvents($date);
     while($eventInfo = mysqli_fetch_array($events)) { 
         $attendance = $mysql->getEventAttendance($eventInfo[0]);  
