@@ -340,7 +340,7 @@ class Mysql {
     
     function getPositions() {
         $sql = "SELECT DISTINCT posList.id,posList.name FROM posList left join leadership on 
-                posList.id=leadership.position where posList.order=0 or posList.order=-1";
+                posList.id=leadership.position where posList.order=0 or posList.order=-1 order by posList.name asc";
         $result = $this->mysqli->query($sql) or die("positions"); 
         return $result;
     }
