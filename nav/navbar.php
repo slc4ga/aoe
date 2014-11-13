@@ -49,8 +49,6 @@
                 <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Sisters 
                     <b class="caret"></b></a>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/sisters/sisters.php?select=1">
-                        Kappa Class</a></li>
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="/sisters/sisters.php?select=2">
                         Lambda Class
                         </a></li>

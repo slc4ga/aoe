@@ -32,8 +32,6 @@
                 <div class="col-md-3">
      
                     <ul class="nav nav-pills nav-stacked">
-                        <li id="kappaLi" class="active">
-                            <a href="javascript.void(0);" id="kappa">Kappa Class</a></li>
                         <li id="lambdaLi" >
                             <a href="javascript.void(0);" id="lambda">Lambda Class</a></li>
                         <li id="muLi" >
@@ -51,7 +49,7 @@
                         <script type="text/javascript">
                             var select = window.location.href.toString().split("=")[1];
                             $('.nav-pills li').removeClass('active');
-                            if(select == 2) {
+                            if(typeof select === 'undefined' || select == 2) {
                                 $.ajax({
                                     url: 'pledgeclass.php',
                                     data: { class: 'Lambda' },
@@ -88,16 +86,6 @@
                                 });
                                 document.getElementById("nuLi").className += " active";
                             } else {
-                                if(isNumber(select)) {
-                                    $.ajax({
-                                        url: 'pledgeclass.php',
-                                        data: { class: 'Kappa' }, 
-                                        success: function(data){
-                                            $('#content').html(data);   
-                                        }
-                                    });
-                                    document.getElementById("kappaLi").className += " active";
-                                } else {
                                     $.ajax({
                                         url: 'sisProf.php',
                                         data: { id: select }, 
@@ -106,7 +94,6 @@
                                             updatePC(select);
                                         }
                                     });
-                                }
                             }
                             function isNumber(n) {
                                 return !isNaN(parseFloat(n)) && isFinite(n);
@@ -128,19 +115,6 @@
         </div>
         <script type="text/javascript">
             window.onload = function() {
-                
-                document.getElementById("kappa").onclick = function() {
-                    $('.nav-pills li').removeClass('active');
-                    $.ajax({
-                        url: 'pledgeclass.php',
-                        data: { class: 'Kappa' },
-                        success: function(data){
-                            $('#content').html(data);   
-                        }
-                    });
-                    document.getElementById("kappaLi").className += " active";
-                    return false;
-                }
                 
                 document.getElementById("lambda").onclick = function() {
                     $('.nav-pills li').removeClass('active');
