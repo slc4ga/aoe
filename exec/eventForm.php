@@ -14,8 +14,11 @@
             </select>
         </div>
         <div class="col-md-6">
-            <input class="form-control" id="date" style="margin-bottom: 15px;" type="date" name="date" 
+            <input class="form-control" id="event-date" style="margin-bottom: 15px;" type="date" name="date" 
                    size="50" placeholder="Date"/>
+            <script type="text/javascript">
+                $("#event-date").datepicker();
+            </script>
             <input class="form-control" id="points" style="margin-bottom: 15px;" type="number" name="points" 
                    size="50" placeholder="Points"/>
         </div>

@@ -50,6 +50,7 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
         <script src="../bootstrap/js/bootstrap.js"></script>
         <script src="../bootstrap/js/bootbox.js"></script>
+        <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
         
     </head>
     <body>

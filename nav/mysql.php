@@ -942,8 +942,11 @@ class Mysql {
                         size="50" placeholder="Event Name"/>
                 </div>
                 <div class="col-md-6">
-                    <input class="form-control" id="date" style="margin-bottom: 15px;" type="date" name="date"  
+                    <input class="form-control" id="date-' . $cat . '" style="margin-bottom: 15px;" type="date" name="date"  
                         size="50" placeholder="Event date"/>
+                    <script type="text/javascript">
+                        $("#date-' . $cat . '").datepicker();
+                    </script>
                 </div>
             </div>
             <div class="row">

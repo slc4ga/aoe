@@ -50,7 +50,6 @@
         <script src="//code.jquery.com/jquery-1.10.2.js"></script>
         <script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
         <script src="../bootstrap/js/bootbox.min.js"></script>
-
         <script src="../bootstrap/js/bootstrap.js"></script>
             
         
@@ -147,6 +146,7 @@
             <? include '../nav/footer.php'; ?> 
         </div>
         <script type="text/javascript">
+            
                             
             function deleteEvent(id, divId) {
                 $.ajax({
