@@ -22,3 +22,7 @@ the setup traffic lights.
 
 Read and edit `config/app.php` and setup the 'Datasources' and any other
 configuration relevant for your application.
+
+## Test Server
+
+Read `bin/cake server` from the root app directory to start the development server. The site can then be viewed at `http://localhost:8765/`
